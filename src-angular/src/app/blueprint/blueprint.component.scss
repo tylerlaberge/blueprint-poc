@@ -1,0 +1,10 @@
+@use '../../variables';
+
+.blueprint {
+    background-color: black;
+    width: 12em;
+    height: 9em;
+    border-radius: 15px;
+    border: 3px solid variables.$primary;
+    box-shadow: rgba(black, 0.35) 0px 5px 15px;
+}
