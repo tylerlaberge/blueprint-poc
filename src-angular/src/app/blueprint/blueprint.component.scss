@@ -1,10 +1,68 @@
 @use '../../variables';
 
 .blueprint {
-    background-color: black;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
     width: 12em;
-    height: 9em;
     border-radius: 15px;
     border: 3px solid variables.$primary;
+    background-color: rgba(variables.$primary, 0.25);
     box-shadow: rgba(black, 0.35) 0px 5px 15px;
+    font-family: Arial, Helvetica, sans-serif;
+
+    .title {
+        border-top-left-radius: 12px;
+        border-top-right-radius: 12px;
+        padding: 0.5em;
+        margin: 0;
+        text-align: center;
+        color: variables.$text-primary;
+        background-color: rgba(variables.$primary, 0.5);
+        font-size: 1em;
+    }
+
+    hr {
+        width: 100%;
+        border-color: variables.$primary;
+        margin-top: 0;
+        margin-bottom: 0.5em;
+    }
+
+    .port-container {
+        display: flex;
+        margin-bottom: 0.5em;
+        .input-port, .output-port {
+            width: 0.5em;
+            height: 0.5em;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .input-port {
+            margin-left: 5%;
+            background-color: rgba(variables.$input, 0.15);
+            border: 2px solid variables.$input;
+        }
+        .output-port {
+            order: 1;
+            margin-right: 5%;
+            background-color: rgba(variables.$output, 0.15);
+            border: 2px solid variables.$output;
+        }
+        .port-label {
+            flex: 1;
+            display: inline-block;
+            line-height: 0.88em;
+            font-size: 0.88em;
+        }
+        .input-port + .port-label {
+            margin-left: 0.5em;
+            color: variables.$input;
+        }
+        .output-port + .port-label {
+            text-align: right;
+            margin-right: 0.5em;
+            color: variables.$output;
+        }
+    }
 }
