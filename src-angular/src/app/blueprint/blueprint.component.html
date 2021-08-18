@@ -1,4 +1,4 @@
-<div class="blueprint">
+<div class="blueprint" cdkDrag (mousedown)="grab()" (mouseup)="release()" [ngClass]="{'mouse-down': isGrabbing()}">
     <h1 class="title">POST /todos</h1>
     <hr>
     <div class="port-container">

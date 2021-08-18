@@ -7,9 +7,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BlueprintComponent implements OnInit {
 
+  private grabbing: boolean = false;
+
   constructor() { }
 
   ngOnInit(): void {
   }
 
+  grab() {
+    this.grabbing = true;
+  }
+
+  release() {
+    this.grabbing = false;
+  }
+
+  isGrabbing() {
+    return this.grabbing;
+  }
 }

@@ -1,6 +1,7 @@
 @use '../../variables';
 
 .blueprint {
+    cursor: grab;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
@@ -64,5 +65,9 @@
             margin-right: 0.5em;
             color: variables.$output;
         }
+    }
+
+    &.mouse-down {
+        cursor: grabbing;
     }
 }
