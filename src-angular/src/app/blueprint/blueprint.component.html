@@ -1,16 +1,24 @@
 <div class="blueprint" cdkDrag (mousedown)="grab()" (mouseup)="release()" [ngClass]="{'mouse-down': isGrabbing()}">
     <h1 class="title">POST /todos</h1>
     <hr>
-    <div class="port-container">
-        <div class="input-port"></div>
-        <div class="port-label">float</div>
-    </div>
-    <div class="port-container">
-        <div class="input-port"></div>
-        <div class="port-label">float</div>
-    </div>
-    <div class="port-container">
-        <div class="output-port"></div>
-        <div class="port-label">float</div>
+    <div class="contract">
+        <div class="inputs">
+            <div class="port-container">
+                <div class="port"></div>
+                <div class="port-label">float</div>
+            </div>
+            <div class="add-port"><mat-icon>add_circle_outline</mat-icon></div>
+        </div>
+        <div class="outputs">
+            <div class="port-container">
+                <div class="port"></div>
+                <div class="port-label">string</div>
+            </div>
+            <div class="port-container">
+                <div class="port"></div>
+                <div class="port-label">bool</div>
+            </div>
+            <div class="add-port"><mat-icon>add_circle_outline</mat-icon></div>
+        </div>
     </div>
 </div>

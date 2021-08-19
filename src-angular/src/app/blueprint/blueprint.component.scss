@@ -1,7 +1,6 @@
 @use '../../variables';
 
 .blueprint {
-    cursor: grab;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
@@ -9,17 +8,18 @@
     border-radius: 15px;
     border: 3px solid variables.$primary;
     background-color: rgba(variables.$primary, 0.25);
-    box-shadow: rgba(black, 0.35) 0px 5px 15px;
     font-family: Arial, Helvetica, sans-serif;
+    box-shadow: rgba(black, 0.35) 0px 5px 15px;
+    cursor: grab;
 
     .title {
+        margin: 0;
+        padding: 0.5em;
         border-top-left-radius: 12px;
         border-top-right-radius: 12px;
-        padding: 0.5em;
-        margin: 0;
-        text-align: center;
         color: variables.$text-primary;
         background-color: rgba(variables.$primary, 0.5);
+        text-align: center;
         font-size: 1em;
     }
 
@@ -30,40 +30,80 @@
         margin-bottom: 0.5em;
     }
 
-    .port-container {
+    .contract {
+        flex: 1;
         display: flex;
-        margin-bottom: 0.5em;
-        .input-port, .output-port {
-            width: 0.5em;
-            height: 0.5em;
-            border-radius: 50%;
-            display: inline-block;
-        }
-        .input-port {
-            margin-left: 5%;
-            background-color: rgba(variables.$input, 0.15);
-            border: 2px solid variables.$input;
-        }
-        .output-port {
-            order: 1;
-            margin-right: 5%;
-            background-color: rgba(variables.$output, 0.15);
-            border: 2px solid variables.$output;
-        }
-        .port-label {
+        .inputs {
             flex: 1;
-            display: inline-block;
-            line-height: 0.88em;
-            font-size: 0.88em;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            .add-port {
+                margin-left: 0.5em;
+                color: variables.$input;
+            }
+            .port {
+                margin-left: .65em;
+                background-color: rgba(variables.$input, 0.15);
+                border: 2px solid variables.$input;
+                &:hover {
+                    background-color: rgba(variables.$input, 0.25);
+                }
+            }
+            .port-label {
+                margin-left: 0.5em;
+                color: variables.$input;
+            }
         }
-        .input-port + .port-label {
-            margin-left: 0.5em;
-            color: variables.$input;
+        .outputs {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            .add-port {
+                margin-right: 0.5em;
+                color: variables.$output;
+            }
+            .port {
+                order: 1;
+                margin-right: .65em;
+                background-color: rgba(variables.$output, 0.15);
+                border: 2px solid variables.$output;
+                &:hover {
+                    background-color: rgba(variables.$output, 0.25);
+                }
+            }
+            .port-label {
+                margin-right: 0.5em;
+                color: variables.$output;
+            }
         }
-        .output-port + .port-label {
-            text-align: right;
-            margin-right: 0.5em;
-            color: variables.$output;
+
+        .add-port {
+            cursor: pointer;
+            transition: color .1s linear;
+            &:hover {
+                color: variables.$text-primary !important;
+            }            
+        }
+
+        .port-container {
+            display: flex;
+            margin-bottom: 0.5em;
+            cursor: pointer;
+            .port {
+                display: inline-block;
+                width: 1em;
+                height: 1em;
+                border-radius: 50%;
+                transition: background-color .1s linear;
+            }
+            .port-label {
+                transition: color .1s linear;
+                &:hover {
+                    color: variables.$text-primary !important;
+                }
+            }
         }
     }
 
