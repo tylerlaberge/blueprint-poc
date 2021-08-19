@@ -1,24 +1,20 @@
-<div class="blueprint" cdkDrag (mousedown)="grab()" (mouseup)="release()" [ngClass]="{'mouse-down': isGrabbing()}">
+<div class="blueprint" cdkDrag (mousedown)="grab()" (mouseup)="release()" [ngClass]="{'mouse-down': isDragging$ | async}">
     <h1 class="title">POST /todos</h1>
     <hr>
     <div class="contract">
         <div class="inputs">
-            <div class="port-container">
+            <div class="add-port" (click)="addInput()"><mat-icon>add_circle_outline</mat-icon></div>
+            <div class="port-container" *ngFor="let input of inputs$ | async">
                 <div class="port"></div>
-                <div class="port-label">float</div>
+                <div class="port-label">{{input.type}}</div>
             </div>
-            <div class="add-port"><mat-icon>add_circle_outline</mat-icon></div>
         </div>
         <div class="outputs">
-            <div class="port-container">
+            <div class="add-port" (click)="addOutput()"><mat-icon>add_circle_outline</mat-icon></div>
+            <div class="port-container" *ngFor="let output of outputs$ | async">
                 <div class="port"></div>
-                <div class="port-label">string</div>
+                <div class="port-label">{{output.type}}</div>
             </div>
-            <div class="port-container">
-                <div class="port"></div>
-                <div class="port-label">bool</div>
-            </div>
-            <div class="add-port"><mat-icon>add_circle_outline</mat-icon></div>
         </div>
     </div>
 </div>

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-blueprint',
@@ -7,7 +8,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BlueprintComponent implements OnInit {
 
-  private grabbing: boolean = false;
+  public isDragging$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public inputs$: BehaviorSubject<Port[]> = new BehaviorSubject<Port[]>([]);
+  public outputs$: BehaviorSubject<Port[]> = new BehaviorSubject<Port[]>([]);
 
   constructor() { }
 
@@ -15,14 +18,25 @@ export class BlueprintComponent implements OnInit {
   }
 
   grab() {
-    this.grabbing = true;
+    this.isDragging$.next(true);
   }
 
   release() {
-    this.grabbing = false;
+    this.isDragging$.next(false);
+  }
+  
+  addInput() {
+    let currentInputs = this.inputs$.getValue();
+    this.inputs$.next([...currentInputs, {direction: 'input', type: 'foo'}]);
   }
 
-  isGrabbing() {
-    return this.grabbing;
+  addOutput() {
+    let currentOutputs = this.outputs$.getValue();
+    this.outputs$.next([...currentOutputs, {direction: 'output', type: 'bar'}]);
   }
+}
+
+export interface Port {
+  direction: 'input' | 'output';
+  type: string;
 }
