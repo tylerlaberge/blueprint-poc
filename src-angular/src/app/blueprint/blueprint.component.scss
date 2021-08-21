@@ -1,10 +1,10 @@
 @use '../../variables';
 
 .blueprint {
-    display: flex;
+    display: inline-flex;
     flex-direction: column;
     justify-content: flex-end;
-    width: 12em;
+    min-width: 15em;
     border-radius: 15px;
     border: 3px solid variables.$primary;
     background-color: rgba(variables.$primary, 0.25);
@@ -38,6 +38,7 @@
             display: flex;
             flex-direction: column;
             align-items: flex-start;
+            margin-right: 0.25em;
             .add-port {
                 margin-left: 0.5em;
                 color: variables.$input;
@@ -63,6 +64,7 @@
             display: flex;
             flex-direction: column;
             align-items: flex-end;
+            margin-left: 0.25em;
             .add-port {
                 margin-right: 0.5em;
                 color: variables.$output;
