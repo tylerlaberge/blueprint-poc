@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSelect } from '@angular/material/select';
 import { BehaviorSubject } from 'rxjs';
 import { v4 as uuid } from 'uuid';
-import { mutate } from '../../utils/rxjs/utils';
+import { appendEmit, mapEmit, filterEmit } from '../../utils/rxjs/utils';
 
 @Component({
   selector: 'app-blueprint',
@@ -37,13 +37,11 @@ export class BlueprintComponent implements OnInit {
   }
   
   addInput() {
-    let currentInputs = this.inputs$.getValue();
-    this.inputs$.next([...currentInputs, {id: uuid(), direction: 'input', type: {name: 'foo'}}]);
+    appendEmit(this.inputs$, {id: uuid(), direction: 'input', type: {name: 'foo'}});
   }
 
   addOutput() {
-    let currentOutputs = this.outputs$.getValue();
-    this.outputs$.next([...currentOutputs, {id: uuid(), direction: 'output', type: {name: 'bar'}}]);
+    appendEmit(this.outputs$, {id: uuid(), direction: 'output', type: {name: 'bar'}});
   }
 
   clickPortType(port: Port) {
@@ -58,8 +56,13 @@ export class BlueprintComponent implements OnInit {
     this.showPortTypeSelectorId$.next(null);
     if (selectedType) {
       let ports$ = isInput(selectedPort.direction) ? this.inputs$ : this.outputs$;
-      mutate(ports$, port => port.id === selectedPort.id ? {...port, type: selectedType} : port);
+      mapEmit(ports$, port => port.id === selectedPort.id ? {...port, type: selectedType} : port);
     }
+  }
+
+  deletePort(selectedPort: Port) {
+    let ports$ = isInput(selectedPort.direction) ? this.inputs$ : this.outputs$;
+    filterEmit(ports$, port => port.id !== selectedPort.id);
   }
 }
 

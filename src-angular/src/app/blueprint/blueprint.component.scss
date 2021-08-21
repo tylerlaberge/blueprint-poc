@@ -54,6 +54,9 @@
                 margin-left: 0.5em;
                 color: variables.$input;
             }
+            .delete-port {
+                margin-left: 0.25em;
+            }
         }
         .outputs {
             flex: 1;
@@ -76,6 +79,9 @@
             .port-label {
                 margin-right: 0.5em;
                 color: variables.$output;
+            }
+            .delete-port {
+                margin-right: 0.25em;
             }
         }
 
@@ -102,6 +108,20 @@
                 transition: color .1s linear;
                 &:hover {
                     color: variables.$text-primary !important;
+                }
+            }
+            .delete-port {
+                display: flex;
+                align-items: center;
+                color: rgba(variables.$text-primary, 0.5);
+                transition: color .1s linear;
+                &:hover {
+                    color: variables.$text-primary;
+                }
+                mat-icon {
+                    font-size: 1em;
+                    height: 1em;
+                    width: 1em;
                 }
             }
         }

@@ -8,3 +8,11 @@ export function mapArray<T>(mapper: (item: T) => T) {
         );
     }
 }
+
+export function filterArray<T>(predicate: (item: T) => boolean) {
+    return function(source: Observable<T[]>): Observable<T[]> {
+        return source.pipe(
+            map(items => items.filter(predicate)),
+        );
+    }
+}

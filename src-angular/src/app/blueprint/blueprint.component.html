@@ -14,12 +14,14 @@
                         </mat-option>
                     </mat-select>
                 </div>
+                <div class="delete-port" *ngIf="!shouldShowPortTypeSelector(input)" (click)="deletePort(input)"><mat-icon>delete</mat-icon></div>
             </div>
         </div>
         <div class="outputs">
             <div class="add-port" (click)="addOutput()"><mat-icon>add_circle_outline</mat-icon></div>
             <div class="port-container" *ngFor="let output of outputs$ | async">
                 <div class="port"></div>
+                <div class="delete-port" *ngIf="!shouldShowPortTypeSelector(output)" (click)="deletePort(output)"><mat-icon>delete</mat-icon></div>
                 <div class="port-label" (click)="clickPortType(output)" *ngIf="!shouldShowPortTypeSelector(output)">{{output.type.name}}</div>
                 <div class="port-type-select" *ngIf="shouldShowPortTypeSelector(output)">
                     <mat-select #portTypeSelector (closed)="selectPortType(output)">
