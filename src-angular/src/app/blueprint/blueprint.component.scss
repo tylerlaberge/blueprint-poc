@@ -8,19 +8,57 @@
     border-radius: 15px;
     border: 3px solid variables.$primary;
     background-color: rgba(variables.$primary, 0.25);
+    transition: background-color .1s linear;
+    &.locked {
+        background-color: rgba(variables.$background, 0.25);
+    }
     font-family: Arial, Helvetica, sans-serif;
     box-shadow: rgba(black, 0.35) 0px 5px 15px;
     cursor: grab;
 
-    .title {
+    .header {
+        display: flex;
         margin: 0;
         padding: 0.5em;
         border-top-left-radius: 12px;
         border-top-right-radius: 12px;
         color: variables.$text-primary;
         background-color: rgba(variables.$primary, 0.5);
-        text-align: center;
-        font-size: 1em;
+        transition: background-color .1s linear;
+        &.locked {
+            background-color: rgba(variables.$background, 0.5);
+        }
+
+        .title {
+            flex: 3;
+            text-align: end;
+            font-size: 1em;
+        }
+    
+        .lock-button {
+            flex: 1;
+            text-align: right;
+            align-self: center;
+            transition: color .1s linear;
+            &.open {
+                color: rgba(variables.$background, 0.75);
+                &:hover {
+                    color: rgba(variables.$background, 1);
+                    cursor: pointer;
+                }
+            }
+            &.closed {
+                color: rgba(variables.$primary, 0.5);
+                &:hover {
+                    color: variables.$primary;
+                    cursor: pointer;
+                }
+            }
+            mat-icon {
+                font-size: 1.5em !important;
+                line-height: 1.5em;
+            }
+        }
     }
 
     hr {
@@ -42,6 +80,9 @@
             .add-port {
                 margin-left: 0.5em;
                 color: variables.$input;
+                &.locked {
+                    color: gray;
+                }
             }
             .port {
                 margin-left: .65em;
@@ -68,6 +109,9 @@
             .add-port {
                 margin-right: 0.5em;
                 color: variables.$output;
+                &.locked {
+                    color: gray;
+                }
             }
             .port {
                 order: 1;
@@ -88,9 +132,9 @@
         }
 
         .add-port {
-            cursor: pointer;
             transition: color .1s linear;
-            &:hover {
+            &:not(.locked):hover {
+                cursor: pointer;
                 color: variables.$text-primary !important;
             }            
         }
@@ -98,7 +142,6 @@
         .port-container {
             display: flex;
             margin-bottom: 0.5em;
-            cursor: pointer;
             .port {
                 display: inline-block;
                 width: 1em;
@@ -108,7 +151,8 @@
             }
             .port-label {
                 transition: color .1s linear;
-                &:hover {
+                &:not(.locked):hover {
+                    cursor: pointer;
                     color: variables.$text-primary !important;
                 }
             }

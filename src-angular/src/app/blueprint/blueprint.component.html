@@ -1,12 +1,18 @@
-<div class="blueprint" cdkDrag (mousedown)="grab()" (mouseup)="release()" [ngClass]="{'mouse-down': isDragging$ | async}">
-    <h1 class="title">POST /todos</h1>
+<div class="blueprint" cdkDrag (mousedown)="grab()" (mouseup)="release()" [ngClass]="{'mouse-down': isDragging$ | async, 'locked': isLocked$ | async}">
+    <div class="header" [ngClass]="{'locked': isLocked$ | async}">
+        <h1 class="title">POST /todos</h1>
+        <span class="lock-button open" (click)="toggleLock()" [ngClass]="{'open': !(isLocked$ | async), 'closed': isLocked$ | async}">
+            <mat-icon *ngIf="!(isLocked$ | async)">lock_open</mat-icon>
+            <mat-icon *ngIf="isLocked$ | async">lock</mat-icon>
+        </span>
+    </div>
     <hr>
     <div class="contract">
         <div class="inputs">
-            <div class="add-port" (click)="addInput()"><mat-icon>add_circle_outline</mat-icon></div>
+            <div class="add-port" (click)="addInput()" [ngClass]="{'locked': isLocked$ | async}"><mat-icon>add_circle_outline</mat-icon></div>
             <div class="port-container" *ngFor="let input of inputs$ | async">
                 <div class="port"></div>
-                <div class="port-label" (click)="clickPortType(input)" *ngIf="!shouldShowPortTypeSelector(input)">{{input.type.name}}</div>
+                <div class="port-label" [ngClass]="{'locked': isLocked$ | async}" (click)="clickPortType(input)" *ngIf="!shouldShowPortTypeSelector(input)">{{input.type.name}}</div>
                 <div class="port-type-select" *ngIf="shouldShowPortTypeSelector(input)">
                     <mat-select #portTypeSelector (closed)="selectPortType(input)">
                         <mat-option *ngFor="let type of portTypes$ | async" (click)="selectPortType(input, type)">
@@ -14,15 +20,15 @@
                         </mat-option>
                     </mat-select>
                 </div>
-                <div class="delete-port" *ngIf="!shouldShowPortTypeSelector(input)" (click)="deletePort(input)"><mat-icon>delete</mat-icon></div>
+                <div class="delete-port" *ngIf="!(isLocked$ | async) && !shouldShowPortTypeSelector(input)" (click)="deletePort(input)"><mat-icon>delete</mat-icon></div>
             </div>
         </div>
         <div class="outputs">
-            <div class="add-port" (click)="addOutput()"><mat-icon>add_circle_outline</mat-icon></div>
+            <div class="add-port" (click)="addOutput()" [ngClass]="{'locked': isLocked$ | async}"><mat-icon>add_circle_outline</mat-icon></div>
             <div class="port-container" *ngFor="let output of outputs$ | async">
                 <div class="port"></div>
-                <div class="delete-port" *ngIf="!shouldShowPortTypeSelector(output)" (click)="deletePort(output)"><mat-icon>delete</mat-icon></div>
-                <div class="port-label" (click)="clickPortType(output)" *ngIf="!shouldShowPortTypeSelector(output)">{{output.type.name}}</div>
+                <div class="delete-port" *ngIf="!(isLocked$ | async) && !shouldShowPortTypeSelector(output)" (click)="deletePort(output)"><mat-icon>delete</mat-icon></div>
+                <div class="port-label" [ngClass]="{'locked': isLocked$ | async}" (click)="clickPortType(output)" *ngIf="!shouldShowPortTypeSelector(output)">{{output.type.name}}</div>
                 <div class="port-type-select" *ngIf="shouldShowPortTypeSelector(output)">
                     <mat-select #portTypeSelector (closed)="selectPortType(output)">
                         <mat-option *ngFor="let type of portTypes$ | async" (click)="selectPortType(output, type)">

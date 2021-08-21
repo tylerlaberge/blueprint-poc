@@ -16,6 +16,7 @@ export class BlueprintComponent implements OnInit {
   public portTypes$: BehaviorSubject<PortType[]> = new BehaviorSubject<PortType[]>([{name: 'number'}, {name: 'bool'}, {name: 'string'}]); 
   
   public isDragging$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public isLocked$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public showPortTypeSelectorId$: BehaviorSubject<string | null> = new BehaviorSubject<string | null>(null);
 
   @ViewChild('portTypeSelector') set portTypeSelector(select: MatSelect) {
@@ -37,15 +38,21 @@ export class BlueprintComponent implements OnInit {
   }
   
   addInput() {
-    appendEmit(this.inputs$, {id: uuid(), direction: 'input', type: {name: 'foo'}});
+    if (!this.isLocked$.getValue()) {
+      appendEmit(this.inputs$, {id: uuid(), direction: 'input', type: {name: 'number'}});
+    }
   }
 
   addOutput() {
-    appendEmit(this.outputs$, {id: uuid(), direction: 'output', type: {name: 'bar'}});
+    if (!this.isLocked$.getValue()) {
+      appendEmit(this.outputs$, {id: uuid(), direction: 'output', type: {name: 'number'}});
+    }
   }
 
   clickPortType(port: Port) {
-    this.showPortTypeSelectorId$.next(port.id);
+    if (!this.isLocked$.getValue()) {
+      this.showPortTypeSelectorId$.next(port.id);
+    }
   }
 
   shouldShowPortTypeSelector(port: Port) {
@@ -63,6 +70,10 @@ export class BlueprintComponent implements OnInit {
   deletePort(selectedPort: Port) {
     let ports$ = isInput(selectedPort.direction) ? this.inputs$ : this.outputs$;
     filterEmit(ports$, port => port.id !== selectedPort.id);
+  }
+
+  toggleLock() {
+    this.isLocked$.next(!this.isLocked$.getValue());
   }
 }
 
