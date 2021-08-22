@@ -1,6 +1,7 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, Output, ViewChild, EventEmitter, ElementRef, Input, ViewChildren, QueryList } from '@angular/core';
 import { MatSelect } from '@angular/material/select';
 import { BehaviorSubject } from 'rxjs';
+import { Blueprint, Port, PortType } from 'src/types/blueprint';
 import { v4 as uuid } from 'uuid';
 import { appendEmit, mapEmit, filterEmit } from '../../utils/rxjs/utils';
 
@@ -11,23 +12,37 @@ import { appendEmit, mapEmit, filterEmit } from '../../utils/rxjs/utils';
 })
 export class BlueprintComponent implements OnInit {
 
+  public identifier: string = uuid();
+
   public inputs$: BehaviorSubject<Port[]> = new BehaviorSubject<Port[]>([]);
   public outputs$: BehaviorSubject<Port[]> = new BehaviorSubject<Port[]>([]);
-  public portTypes$: BehaviorSubject<PortType[]> = new BehaviorSubject<PortType[]>([{name: 'number'}, {name: 'bool'}, {name: 'string'}]); 
+  public portTypes$: BehaviorSubject<PortType[]> = new BehaviorSubject<PortType[]>(['number', 'bool', 'string', 'object']); 
   
   public isDragging$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public isLocked$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public showPortTypeSelectorId$: BehaviorSubject<string | null> = new BehaviorSubject<string | null>(null);
 
+  @Input() blueprint!: Blueprint;
+  @Output() onDrag = new EventEmitter<string>();
+
+  @ViewChildren('port') portElements!: QueryList<ElementRef>;
   @ViewChild('portTypeSelector') set portTypeSelector(select: MatSelect) {
     if (select) {
       setTimeout(() => select.open());
     }
   }
 
-  constructor() { }
+  ngOnInit(): void {
+    this.blueprint.inputs.forEach(input => this.addInput(input));
+    this.blueprint.outputs.forEach(output => this.addOutput(output));
+    this.isLocked$.next(true);
+  }
 
-  ngOnInit(): void { }
+  getPortElement(portId: string): HTMLElement {
+    return this.portElements
+      .map(element => element.nativeElement)
+      .find(nativeElement => nativeElement.getAttribute('id') === portId);
+  }
 
   grab() {
     this.isDragging$.next(true);
@@ -36,16 +51,20 @@ export class BlueprintComponent implements OnInit {
   release() {
     this.isDragging$.next(false);
   }
+
+  drag() {
+    this.onDrag.emit(this.identifier);
+  }
   
-  addInput() {
+  addInput(input: Port = {id: uuid(), direction: 'input', datatype: 'number'}) {
     if (!this.isLocked$.getValue()) {
-      appendEmit(this.inputs$, {id: uuid(), direction: 'input', type: {name: 'number'}});
+      appendEmit(this.inputs$, {...input, direction: 'input'});
     }
   }
 
-  addOutput() {
+  addOutput(output: Port = {id: uuid(), direction: 'output', datatype: 'number'}) {
     if (!this.isLocked$.getValue()) {
-      appendEmit(this.outputs$, {id: uuid(), direction: 'output', type: {name: 'number'}});
+      appendEmit(this.outputs$, {...output, direction: 'output'});
     }
   }
 
@@ -63,7 +82,7 @@ export class BlueprintComponent implements OnInit {
     this.showPortTypeSelectorId$.next(null);
     if (selectedType) {
       let ports$ = isInput(selectedPort.direction) ? this.inputs$ : this.outputs$;
-      mapEmit(ports$, port => port.id === selectedPort.id ? {...port, type: selectedType} : port);
+      mapEmit(ports$, port => port.id === selectedPort.id ? {...port, datatype: selectedType} : port);
     }
   }
 
@@ -77,23 +96,10 @@ export class BlueprintComponent implements OnInit {
   }
 }
 
-export type Input = 'input';
-export type Output = 'output';
-
-export interface PortType {
-  name: string
-}
-
-export interface Port {
-  id: string;
-  direction: Input | Output;
-  type: PortType;
-}
-
-export function isInput(value: Input | Output): value is Input {
+export function isInput(value: 'input' | 'output'): value is 'input' {
   return value === 'input';
 }
 
-export function isOutput(value: Input | Output): value is Output {
+export function isOutput(value: 'input' | 'output'): value is 'output' {
   return value === 'output';
 }
