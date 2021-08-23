@@ -92,10 +92,6 @@
                     background-color: rgba(variables.$input, 0.25);
                 }
             }
-            .port-label {
-                margin-left: 0.5em;
-                color: variables.$input;
-            }
             .delete-port {
                 margin-left: 0.25em;
             }
@@ -122,10 +118,6 @@
                     background-color: rgba(variables.$output, 0.25);
                 }
             }
-            .port-label {
-                margin-right: 0.5em;
-                color: variables.$output;
-            }
             .delete-port {
                 margin-right: 0.25em;
             }
@@ -148,13 +140,6 @@
                 height: 1em;
                 border-radius: 50%;
                 transition: background-color .1s linear;
-            }
-            .port-label {
-                transition: color .1s linear;
-                &:not(.locked):hover {
-                    cursor: pointer;
-                    color: variables.$text-primary !important;
-                }
             }
             .delete-port {
                 display: flex;

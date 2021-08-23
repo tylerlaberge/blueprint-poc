@@ -12,14 +12,7 @@
             <div class="add-port" (click)="addInput()" [ngClass]="{'locked': isLocked$ | async}"><mat-icon>add_circle_outline</mat-icon></div>
             <div class="port-container" *ngFor="let input of inputs$ | async">
                 <div #port [id]="input.id" class="port"></div>
-                <div class="port-label" [ngClass]="{'locked': isLocked$ | async}" (click)="clickPortType(input)" *ngIf="!shouldShowPortTypeSelector(input)">{{input.datatype}}</div>
-                <div class="port-type-select" *ngIf="shouldShowPortTypeSelector(input)">
-                    <mat-select #portTypeSelector (closed)="selectPortType(input)">
-                        <mat-option *ngFor="let type of portTypes$ | async" (click)="selectPortType(input, type)">
-                            {{type}}
-                        </mat-option>
-                    </mat-select>
-                </div>
+                <port-datatype [datatype]="input.datatype" [direction]="input.direction" [locked]="(isLocked$ | async)!" (onSelectDatatype)="selectPortType(input, $event)"></port-datatype>
                 <div class="delete-port" *ngIf="!(isLocked$ | async) && !shouldShowPortTypeSelector(input)" (click)="deletePort(input)"><mat-icon>delete</mat-icon></div>
             </div>
         </div>
@@ -28,14 +21,7 @@
             <div class="port-container" *ngFor="let output of outputs$ | async">
                 <div #port [id]="output.id" class="port"></div>
                 <div class="delete-port" *ngIf="!(isLocked$ | async) && !shouldShowPortTypeSelector(output)" (click)="deletePort(output)"><mat-icon>delete</mat-icon></div>
-                <div class="port-label" [ngClass]="{'locked': isLocked$ | async}" (click)="clickPortType(output)" *ngIf="!shouldShowPortTypeSelector(output)">{{output.datatype}}</div>
-                <div class="port-type-select" *ngIf="shouldShowPortTypeSelector(output)">
-                    <mat-select #portTypeSelector (closed)="selectPortType(output)">
-                        <mat-option *ngFor="let type of portTypes$ | async" (click)="selectPortType(output, type)">
-                            {{type}}
-                        </mat-option>
-                    </mat-select>
-                </div>
+                <port-datatype [datatype]="output.datatype" [direction]="output.direction" [locked]="(isLocked$ | async)!" (onSelectDatatype)="selectPortType(output, $event)"></port-datatype>
             </div>
         </div>
     </div>

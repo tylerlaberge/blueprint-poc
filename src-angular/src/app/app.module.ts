@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { EditorComponent } from './editor/editor.component';
+import { PortDatatypeComponent } from './blueprint/port/port-datatype/port-datatype.component';
 import { BlueprintComponent } from './blueprint/blueprint.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatIconModule } from '@angular/material/icon';
@@ -18,6 +19,7 @@ import { HttpClientModule } from '@angular/common/http';
   declarations: [
     AppComponent,
     EditorComponent,
+    PortDatatypeComponent,
     BlueprintComponent
   ],
   imports: [
