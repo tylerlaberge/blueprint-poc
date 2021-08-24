@@ -4,6 +4,7 @@ import { BehaviorSubject } from 'rxjs';
 import { Blueprint, Port, PortType } from 'src/types/blueprint';
 import { v4 as uuid } from 'uuid';
 import { appendEmit, mapEmit, filterEmit } from '../../utils/rxjs/utils';
+import { PortCircleComponent } from './port/port-circle/port-circle.component';
 
 @Component({
   selector: 'app-blueprint',
@@ -25,12 +26,7 @@ export class BlueprintComponent implements OnInit {
   @Input() blueprint!: Blueprint;
   @Output() onDrag = new EventEmitter<string>();
 
-  @ViewChildren('port') portElements!: QueryList<ElementRef>;
-  @ViewChild('portTypeSelector') set portTypeSelector(select: MatSelect) {
-    if (select) {
-      setTimeout(() => select.open());
-    }
-  }
+  @ViewChildren(PortCircleComponent) portComponents!: QueryList<PortCircleComponent>;
 
   ngOnInit(): void {
     this.blueprint.inputs.forEach(input => this.addInput(input));
@@ -39,8 +35,8 @@ export class BlueprintComponent implements OnInit {
   }
 
   getPortElement(portId: string): HTMLElement {
-    return this.portElements
-      .map(element => element.nativeElement)
+    return this.portComponents
+      .map(portComponent => portComponent.portCircleRef.nativeElement)
       .find(nativeElement => nativeElement.getAttribute('id') === portId);
   }
 

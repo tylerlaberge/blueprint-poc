@@ -1,0 +1,25 @@
+@use '../../../../variables';
+
+.port-circle {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    border-radius: 50%;
+    transition: background-color .1s linear;
+    &.input {
+        margin-left: .65em;
+        background-color: rgba(variables.$input, 0.15);
+        border: 2px solid variables.$input;
+        &:hover:not(.locked) {
+            background-color: rgba(variables.$input, 0.25);
+        }
+    }
+    &.output {
+        margin-right: .65em;
+        background-color: rgba(variables.$output, 0.15);
+        border: 2px solid variables.$output;
+        &:hover:not(.locked) {
+            background-color: rgba(variables.$output, 0.25);
+        }
+    }
+}

@@ -84,14 +84,6 @@
                     color: gray;
                 }
             }
-            .port {
-                margin-left: .65em;
-                background-color: rgba(variables.$input, 0.15);
-                border: 2px solid variables.$input;
-                &:hover {
-                    background-color: rgba(variables.$input, 0.25);
-                }
-            }
         }
         .outputs {
             flex: 1;
@@ -106,14 +98,8 @@
                     color: gray;
                 }
             }
-            .port {
+            port-circle {
                 order: 1;
-                margin-right: .65em;
-                background-color: rgba(variables.$output, 0.15);
-                border: 2px solid variables.$output;
-                &:hover {
-                    background-color: rgba(variables.$output, 0.25);
-                }
             }
         }
 
@@ -128,13 +114,6 @@
         .port-container {
             display: flex;
             margin-bottom: 0.5em;
-            .port {
-                display: inline-block;
-                width: 1em;
-                height: 1em;
-                border-radius: 50%;
-                transition: background-color .1s linear;
-            }
         }
     }
 

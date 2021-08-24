@@ -23,9 +23,6 @@ export class EditorComponent implements AfterViewInit, OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    this.portMappings$.subscribe((m) => console.warn(m));
-    this.connectorMappings$.subscribe((c) => console.warn(c));
-
     let blueprintA: Blueprint = {id: uuid(), position: {x: 400, y: 500}, inputs: [
       {id: uuid(), direction: 'input', datatype: 'number'},
       {id: uuid(), direction: 'input', datatype: 'number'},
@@ -48,7 +45,6 @@ export class EditorComponent implements AfterViewInit, OnInit {
   }
 
   ngAfterViewInit(): void {
-    console.warn("hello?");
     this.updatePortMappings();
     this.initPortConnections();
   }
@@ -64,7 +60,6 @@ export class EditorComponent implements AfterViewInit, OnInit {
           return mappings;
         }, {}))
       ).subscribe(blueprintPortMappings => {
-        console.warn("update port mappings!");
         allPortMappings = {...allPortMappings, ...blueprintPortMappings};
       });
     });
@@ -80,7 +75,6 @@ export class EditorComponent implements AfterViewInit, OnInit {
         filter(input => !!input.connection),
         map(connectedInput => [connectedInput.id, connectedInput.connection!.id])
       ).subscribe(([inputPortId, outputPortId]) => {
-        console.warn("init port connections!");
         let inputBlueprint = blueprint;
         let outputBlueprint = this.portMappings$.getValue()[outputPortId];
         let connector = this.drawPortConnector(outputBlueprint.getPortElement(outputPortId), inputBlueprint.getPortElement(inputPortId));
