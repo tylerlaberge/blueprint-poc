@@ -1,10 +1,9 @@
-import { Component, OnInit, Output, ViewChild, EventEmitter, ElementRef, Input, ViewChildren, QueryList } from '@angular/core';
-import { MatSelect } from '@angular/material/select';
+import { Component, OnInit, Output, EventEmitter, Input, ViewChildren, QueryList } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Blueprint, Port, PortType } from 'src/types/blueprint';
 import { v4 as uuid } from 'uuid';
 import { appendEmit, mapEmit, filterEmit } from '../../utils/rxjs/utils';
-import { PortCircleComponent } from './port/port-circle/port-circle.component';
+import { PortControlComponent } from './port/port-control.component';
 
 @Component({
   selector: 'app-blueprint',
@@ -26,7 +25,7 @@ export class BlueprintComponent implements OnInit {
   @Input() blueprint!: Blueprint;
   @Output() onDrag = new EventEmitter<string>();
 
-  @ViewChildren(PortCircleComponent) portComponents!: QueryList<PortCircleComponent>;
+  @ViewChildren(PortControlComponent) portControls!: QueryList<PortControlComponent>;
 
   ngOnInit(): void {
     this.blueprint.inputs.forEach(input => this.addInput(input));
@@ -35,8 +34,8 @@ export class BlueprintComponent implements OnInit {
   }
 
   getPortElement(portId: string): HTMLElement {
-    return this.portComponents
-      .map(portComponent => portComponent.portCircleRef.nativeElement)
+    return this.portControls
+      .map(portControl => portControl.portCircleComponent.elementRef.nativeElement)
       .find(nativeElement => nativeElement.getAttribute('id') === portId);
   }
 
@@ -62,16 +61,6 @@ export class BlueprintComponent implements OnInit {
     if (!this.isLocked$.getValue()) {
       appendEmit(this.outputs$, {...output, direction: 'output'});
     }
-  }
-
-  clickPortType(port: Port) {
-    if (!this.isLocked$.getValue()) {
-      this.showPortTypeSelectorId$.next(port.id);
-    }
-  }
-
-  shouldShowPortTypeSelector(port: Port) {
-    return this.showPortTypeSelectorId$.getValue() === port.id;
   }
 
   selectPortType(selectedPort: Port, selectedType?: PortType) {

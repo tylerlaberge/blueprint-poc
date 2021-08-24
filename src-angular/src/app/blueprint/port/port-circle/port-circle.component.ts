@@ -16,7 +16,7 @@ export class PortCircleComponent {
     @Input() set direction(value: 'input' | 'output') { this._direction$.next(value) };
     @Input() set id(value: string) { this._id$.next(value) };
 
-    @ViewChild('portCircleRef') portCircleRef!: ElementRef;
+    @ViewChild('portCircleRef') elementRef!: ElementRef;
 
     isInput(): boolean {
       return this._direction$.getValue() === 'input';

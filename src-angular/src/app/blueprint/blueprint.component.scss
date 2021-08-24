@@ -98,9 +98,7 @@
                     color: gray;
                 }
             }
-            port-circle {
-                order: 1;
-            }
+            
         }
 
         .add-port {
@@ -111,10 +109,6 @@
             }            
         }
 
-        .port-container {
-            display: flex;
-            margin-bottom: 0.5em;
-        }
     }
 
     &.mouse-down {
