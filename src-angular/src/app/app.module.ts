@@ -4,6 +4,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { EditorComponent } from './editor/editor.component';
 import { PortDatatypeComponent } from './blueprint/port/port-datatype/port-datatype.component';
+import { PortDeleteButtonComponent } from './blueprint/port/port-delete-button/port-delete-button.component';
 import { BlueprintComponent } from './blueprint/blueprint.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatIconModule } from '@angular/material/icon';
@@ -20,6 +21,7 @@ import { HttpClientModule } from '@angular/common/http';
     AppComponent,
     EditorComponent,
     PortDatatypeComponent,
+    PortDeleteButtonComponent,
     BlueprintComponent
   ],
   imports: [

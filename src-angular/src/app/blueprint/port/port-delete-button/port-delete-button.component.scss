@@ -1,0 +1,19 @@
+@use '../../../../variables';
+
+.port-delete-button {
+    display: flex;
+    align-items: center;
+    color: rgba(variables.$text-primary, 0.5);
+    transition: color .1s linear;
+    margin-left: 0.25em;
+    margin-right: 0.25em;
+    &:hover {
+        color: variables.$text-primary;
+        cursor: pointer;
+    }
+    mat-icon {
+        font-size: 1em;
+        height: 1em;
+        width: 1em;
+    }   
+}

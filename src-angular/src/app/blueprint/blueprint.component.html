@@ -13,14 +13,14 @@
             <div class="port-container" *ngFor="let input of inputs$ | async">
                 <div #port [id]="input.id" class="port"></div>
                 <port-datatype [datatype]="input.datatype" [direction]="input.direction" [locked]="(isLocked$ | async)!" (onSelectDatatype)="selectPortType(input, $event)"></port-datatype>
-                <div class="delete-port" *ngIf="!(isLocked$ | async) && !shouldShowPortTypeSelector(input)" (click)="deletePort(input)"><mat-icon>delete</mat-icon></div>
+                <port-delete-button [locked]="(isLocked$ | async)!" (onDeletePort)="deletePort(input)"></port-delete-button>
             </div>
         </div>
         <div class="outputs">
             <div class="add-port" (click)="addOutput()" [ngClass]="{'locked': isLocked$ | async}"><mat-icon>add_circle_outline</mat-icon></div>
             <div class="port-container" *ngFor="let output of outputs$ | async">
                 <div #port [id]="output.id" class="port"></div>
-                <div class="delete-port" *ngIf="!(isLocked$ | async) && !shouldShowPortTypeSelector(output)" (click)="deletePort(output)"><mat-icon>delete</mat-icon></div>
+                <port-delete-button [locked]="(isLocked$ | async)!" (onDeletePort)="deletePort(output)"></port-delete-button>
                 <port-datatype [datatype]="output.datatype" [direction]="output.direction" [locked]="(isLocked$ | async)!" (onSelectDatatype)="selectPortType(output, $event)"></port-datatype>
             </div>
         </div>
