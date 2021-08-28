@@ -3,7 +3,7 @@ import { BehaviorSubject } from 'rxjs';
 import { Blueprint, Port, PortType } from 'src/types/blueprint';
 import { v4 as uuid } from 'uuid';
 import { appendEmit, mapEmit, filterEmit } from '../../utils/rxjs/utils';
-import { PortControlComponent } from './port/port-control.component';
+import { PortControlComponent } from './port/port-control/port-control.component';
 
 @Component({
   selector: 'app-blueprint',

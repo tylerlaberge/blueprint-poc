@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Port, PortType } from 'src/types/blueprint';
-import { PortCircleComponent } from './port-circle/port-circle.component';
+import { PortCircleComponent } from '../port-circle/port-circle.component';
 
 @Component({
   selector: 'port-control',
