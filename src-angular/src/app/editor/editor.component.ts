@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import * as LeaderLine from 'leader-line-new';
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { Blueprint } from 'src/types/blueprint';
@@ -77,7 +77,7 @@ export class EditorComponent implements AfterViewInit, OnInit {
       ).subscribe(([inputPortId, outputPortId]) => {
         let inputBlueprint = blueprint;
         let outputBlueprint = this.portMappings$.getValue()[outputPortId];
-        let connector = this.drawPortConnector(outputBlueprint.getPortElement(outputPortId), inputBlueprint.getPortElement(inputPortId));
+        let connector = this.drawPortConnector(outputBlueprint.getOutputPortElement(outputPortId), inputBlueprint.getInputPortElement(inputPortId));
         if (allConnectorMappings[inputBlueprint.identifier]) {
           allConnectorMappings[inputBlueprint.identifier].push(connector);
           allConnectorMappings[outputBlueprint.identifier].push(connector);

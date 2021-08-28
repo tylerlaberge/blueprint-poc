@@ -71,7 +71,7 @@
     .contract {
         flex: 1;
         display: flex;
-        port-list-control {
+        blueprint-inputs, blueprint-outputs {
             flex: 1;
         }
     }

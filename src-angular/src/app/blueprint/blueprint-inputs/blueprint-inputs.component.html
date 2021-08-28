@@ -1,0 +1,10 @@
+<div class="blueprint-inputs">
+    <port-list-control 
+        [ports]="(_inputs$ | async)!" 
+        [direction]="'input'" 
+        [locked]="(_locked$ | async)!" 
+        (onAddPort)="addInput()" 
+        (onDeletePort)="deleteInput($event!)" 
+        (onSelectDatatype)="selectInputDatatype($event!)">
+    </port-list-control>
+</div>

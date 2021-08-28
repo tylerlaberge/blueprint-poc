@@ -8,7 +8,19 @@
     </div>
     <hr>
     <div class="contract">
-        <port-list-control [ports]="(inputs$ | async)!" [direction]="'input'" [locked]="(isLocked$ | async)!" (onAddPort)="addInput()" (onDeletePort)="deletePort($event!)" (onSelectDatatype)="selectPortType($event!)"></port-list-control>
-        <port-list-control [ports]="(outputs$ | async)!" [direction]="'output'" [locked]="(isLocked$ | async)!" (onAddPort)="addOutput()" (onDeletePort)="deletePort($event!)" (onSelectDatatype)="selectPortType($event!)"></port-list-control>
+        <blueprint-inputs 
+            [inputs]="(inputs$ | async)!" 
+            [locked]="(isLocked$ | async)!" 
+            (onAddInput)="addInput()" 
+            (onDeleteInput)="deletePort($event!)" 
+            (onSelectInputDatatype)="selectPortType($event!)">
+        </blueprint-inputs>
+        <blueprint-outputs 
+            [outputs]="(outputs$ | async)!" 
+            [locked]="(isLocked$ | async)!" 
+            (onAddOutput)="addOutput()" 
+            (onDeleteOutput)="deletePort($event!)" 
+            (onSelectOutputDatatype)="selectPortType($event!)">
+        </blueprint-outputs>
     </div>
 </div>

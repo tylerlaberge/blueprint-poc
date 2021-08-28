@@ -1,10 +1,10 @@
-import { Component, OnInit, Output, EventEmitter, Input, ViewChildren, QueryList } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, ViewChildren, ViewChild } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Blueprint, Port, PortType } from 'src/types/blueprint';
 import { v4 as uuid } from 'uuid';
 import { appendEmit, mapEmit, filterEmit } from '../../utils/rxjs/utils';
-import { PortControlComponent } from './port/port-control/port-control.component';
-import { PortListControlComponent } from './port/port-list-control/port-list-control.component';
+import { BlueprintInputsComponent } from './blueprint-inputs/blueprint-inputs.component';
+import { BlueprintOutputsComponent } from './blueprint-outputs/blueprint-outputs.component';
 
 @Component({
   selector: 'app-blueprint',
@@ -26,7 +26,8 @@ export class BlueprintComponent implements OnInit {
   @Input() blueprint!: Blueprint;
   @Output() onDrag = new EventEmitter<string>();
 
-  @ViewChildren(PortListControlComponent) portListControls!: QueryList<PortListControlComponent>;
+  @ViewChild(BlueprintInputsComponent) blueprintInputsControl!: BlueprintInputsComponent;
+  @ViewChild(BlueprintOutputsComponent) blueprintOutputsControl!: BlueprintOutputsComponent;
 
   ngOnInit(): void {
     this.blueprint.inputs.forEach(input => this.addInput(input));
@@ -34,11 +35,16 @@ export class BlueprintComponent implements OnInit {
     this.isLocked$.next(true);
   }
 
-  getPortElement(portId: string): HTMLElement {
-    return this.portListControls
-      .reduce((portControls: PortControlComponent[], portListControl: PortListControlComponent) => portControls.concat(portListControl.getPortControls()), [])
+  getInputPortElement(inputPortId: string): HTMLElement {
+    return this.blueprintInputsControl.getInputControls()
       .map(portControl => portControl.portCircleComponent.elementRef.nativeElement)
-      .find(nativeElement => nativeElement.getAttribute('id') === portId);
+      .find(nativeElement => nativeElement.getAttribute('id') === inputPortId);
+  }
+
+  getOutputPortElement(outputPortId: string): HTMLElement {
+    return this.blueprintOutputsControl.getOutputControls()
+      .map(portControl => portControl.portCircleComponent.elementRef.nativeElement)
+      .find(nativeElement => nativeElement.getAttribute('id') === outputPortId);
   }
 
   grab() {

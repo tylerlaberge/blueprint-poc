@@ -9,6 +9,8 @@ import { PortAddButtonComponent } from './blueprint/port/port-add-button/port-ad
 import { PortCircleComponent } from './blueprint/port/port-circle/port-circle.component';
 import { PortControlComponent } from './blueprint/port/port-control/port-control.component';
 import { PortListControlComponent } from './blueprint/port/port-list-control/port-list-control.component';
+import { BlueprintInputsComponent } from './blueprint/blueprint-inputs/blueprint-inputs.component';
+import { BlueprintOutputsComponent } from './blueprint/blueprint-outputs/blueprint-outputs.component';
 import { BlueprintComponent } from './blueprint/blueprint.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatIconModule } from '@angular/material/icon';
@@ -30,6 +32,8 @@ import { HttpClientModule } from '@angular/common/http';
     PortCircleComponent,
     PortControlComponent,
     PortListControlComponent,
+    BlueprintInputsComponent,
+    BlueprintOutputsComponent,
     BlueprintComponent
   ],
   imports: [
