@@ -1,0 +1,16 @@
+<div class="blueprint-contract">
+    <blueprint-inputs 
+        [inputs]="(_inputs$ | async)!" 
+        [locked]="(_locked$ | async)!" 
+        (onAddInput)="addInput()" 
+        (onDeleteInput)="deleteInput($event!)" 
+        (onSelectInputDatatype)="selectInputDatatype($event!)">
+    </blueprint-inputs>
+    <blueprint-outputs 
+        [outputs]="(_outputs$ | async)!" 
+        [locked]="(_locked$ | async)!" 
+        (onAddOutput)="addOutput()" 
+        (onDeleteOutput)="deleteOutput($event!)" 
+        (onSelectOutputDatatype)="selectOutputDatatype($event!)">
+    </blueprint-outputs>
+</div>

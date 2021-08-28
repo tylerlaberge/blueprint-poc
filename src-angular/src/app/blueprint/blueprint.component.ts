@@ -1,10 +1,9 @@
-import { Component, OnInit, Output, EventEmitter, Input, ViewChildren, ViewChild } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, ViewChild } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Blueprint, Port, PortType } from 'src/types/blueprint';
 import { v4 as uuid } from 'uuid';
 import { appendEmit, mapEmit, filterEmit } from '../../utils/rxjs/utils';
-import { BlueprintInputsComponent } from './blueprint-inputs/blueprint-inputs.component';
-import { BlueprintOutputsComponent } from './blueprint-outputs/blueprint-outputs.component';
+import { BlueprintContractComponent } from './blueprint-contract/blueprint-contract.component';
 
 @Component({
   selector: 'app-blueprint',
@@ -26,8 +25,7 @@ export class BlueprintComponent implements OnInit {
   @Input() blueprint!: Blueprint;
   @Output() onDrag = new EventEmitter<string>();
 
-  @ViewChild(BlueprintInputsComponent) blueprintInputsControl!: BlueprintInputsComponent;
-  @ViewChild(BlueprintOutputsComponent) blueprintOutputsControl!: BlueprintOutputsComponent;
+  @ViewChild(BlueprintContractComponent) blueprintContactControl!: BlueprintContractComponent;
 
   ngOnInit(): void {
     this.blueprint.inputs.forEach(input => this.addInput(input));
@@ -36,13 +34,13 @@ export class BlueprintComponent implements OnInit {
   }
 
   getInputPortElement(inputPortId: string): HTMLElement {
-    return this.blueprintInputsControl.getInputControls()
+    return this.blueprintContactControl.getInputControls()
       .map(portControl => portControl.portCircleComponent.elementRef.nativeElement)
       .find(nativeElement => nativeElement.getAttribute('id') === inputPortId);
   }
 
   getOutputPortElement(outputPortId: string): HTMLElement {
-    return this.blueprintOutputsControl.getOutputControls()
+    return this.blueprintContactControl.getOutputControls()
       .map(portControl => portControl.portCircleComponent.elementRef.nativeElement)
       .find(nativeElement => nativeElement.getAttribute('id') === outputPortId);
   }

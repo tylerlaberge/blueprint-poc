@@ -68,12 +68,8 @@
         margin-bottom: 0.5em;
     }
 
-    .contract {
+    blueprint-contract {
         flex: 1;
-        display: flex;
-        blueprint-inputs, blueprint-outputs {
-            flex: 1;
-        }
     }
 
     &.mouse-down {

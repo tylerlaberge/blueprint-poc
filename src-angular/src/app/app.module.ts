@@ -11,6 +11,7 @@ import { PortControlComponent } from './blueprint/port/port-control/port-control
 import { PortListControlComponent } from './blueprint/port/port-list-control/port-list-control.component';
 import { BlueprintInputsComponent } from './blueprint/blueprint-inputs/blueprint-inputs.component';
 import { BlueprintOutputsComponent } from './blueprint/blueprint-outputs/blueprint-outputs.component';
+import { BlueprintContractComponent } from './blueprint/blueprint-contract/blueprint-contract.component';
 import { BlueprintComponent } from './blueprint/blueprint.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatIconModule } from '@angular/material/icon';
@@ -34,6 +35,7 @@ import { HttpClientModule } from '@angular/common/http';
     PortListControlComponent,
     BlueprintInputsComponent,
     BlueprintOutputsComponent,
+    BlueprintContractComponent,
     BlueprintComponent
   ],
   imports: [

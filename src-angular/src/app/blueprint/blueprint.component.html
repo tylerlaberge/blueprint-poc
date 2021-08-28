@@ -7,20 +7,15 @@
         </span>
     </div>
     <hr>
-    <div class="contract">
-        <blueprint-inputs 
-            [inputs]="(inputs$ | async)!" 
-            [locked]="(isLocked$ | async)!" 
-            (onAddInput)="addInput()" 
-            (onDeleteInput)="deletePort($event!)" 
-            (onSelectInputDatatype)="selectPortType($event!)">
-        </blueprint-inputs>
-        <blueprint-outputs 
-            [outputs]="(outputs$ | async)!" 
-            [locked]="(isLocked$ | async)!" 
-            (onAddOutput)="addOutput()" 
-            (onDeleteOutput)="deletePort($event!)" 
-            (onSelectOutputDatatype)="selectPortType($event!)">
-        </blueprint-outputs>
-    </div>
+    <blueprint-contract 
+        [inputs]="(inputs$ | async)!" 
+        [outputs]="(outputs$ | async)!" 
+        [locked]="(isLocked$ | async)!" 
+        (onAddInput)="addInput()" 
+        (onAddOutput)="addOutput()" 
+        (onDeleteInput)="deletePort($event!)"
+        (onDeleteOutput)="deletePort($event!)" 
+        (onSelectInputDatatype)="selectPortType($event!)"
+        (onSelectOutputDatatype)="selectPortType($event!)"
+    ></blueprint-contract>
 </div>
