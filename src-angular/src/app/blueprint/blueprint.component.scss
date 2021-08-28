@@ -71,19 +71,8 @@
     .contract {
         flex: 1;
         display: flex;
-        .inputs {
+        port-list-control {
             flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            margin-right: 0.25em;
-        }
-        .outputs {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            margin-left: 0.25em;  
         }
     }
 

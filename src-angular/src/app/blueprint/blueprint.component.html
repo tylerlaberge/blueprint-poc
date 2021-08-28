@@ -8,13 +8,7 @@
     </div>
     <hr>
     <div class="contract">
-        <div class="inputs">
-            <port-add-button [direction]="'input'" [locked]="(isLocked$ | async)!" (onAddPort)="addInput()"></port-add-button>
-            <port-control *ngFor="let input of inputs$ | async" [port]="input" [locked]="(isLocked$ | async)!" (onSelectDatatype)="selectPortType(input, $event)" (onDeletePort)="deletePort(input)"></port-control>
-        </div>
-        <div class="outputs">
-            <port-add-button [direction]="'output'" [locked]="(isLocked$ | async)!" (onAddPort)="addOutput()"></port-add-button>
-            <port-control *ngFor="let output of outputs$ | async" [port]="output" [locked]="(isLocked$ | async)!" (onSelectDatatype)="selectPortType(output, $event)" (onDeletePort)="deletePort(output)"></port-control>
-        </div>
+        <port-list-control [ports]="(inputs$ | async)!" [direction]="'input'" [locked]="(isLocked$ | async)!" (onAddPort)="addInput()" (onDeletePort)="deletePort($event!)" (onSelectDatatype)="selectPortType($event!)"></port-list-control>
+        <port-list-control [ports]="(outputs$ | async)!" [direction]="'output'" [locked]="(isLocked$ | async)!" (onAddPort)="addOutput()" (onDeletePort)="deletePort($event!)" (onSelectDatatype)="selectPortType($event!)"></port-list-control>
     </div>
 </div>

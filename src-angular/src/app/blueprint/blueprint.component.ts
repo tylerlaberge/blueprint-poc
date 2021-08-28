@@ -4,6 +4,7 @@ import { Blueprint, Port, PortType } from 'src/types/blueprint';
 import { v4 as uuid } from 'uuid';
 import { appendEmit, mapEmit, filterEmit } from '../../utils/rxjs/utils';
 import { PortControlComponent } from './port/port-control/port-control.component';
+import { PortListControlComponent } from './port/port-list-control/port-list-control.component';
 
 @Component({
   selector: 'app-blueprint',
@@ -25,7 +26,7 @@ export class BlueprintComponent implements OnInit {
   @Input() blueprint!: Blueprint;
   @Output() onDrag = new EventEmitter<string>();
 
-  @ViewChildren(PortControlComponent) portControls!: QueryList<PortControlComponent>;
+  @ViewChildren(PortListControlComponent) portListControls!: QueryList<PortListControlComponent>;
 
   ngOnInit(): void {
     this.blueprint.inputs.forEach(input => this.addInput(input));
@@ -34,7 +35,8 @@ export class BlueprintComponent implements OnInit {
   }
 
   getPortElement(portId: string): HTMLElement {
-    return this.portControls
+    return this.portListControls
+      .reduce((portControls: PortControlComponent[], portListControl: PortListControlComponent) => portControls.concat(portListControl.getPortControls()), [])
       .map(portControl => portControl.portCircleComponent.elementRef.nativeElement)
       .find(nativeElement => nativeElement.getAttribute('id') === portId);
   }
@@ -63,11 +65,11 @@ export class BlueprintComponent implements OnInit {
     }
   }
 
-  selectPortType(selectedPort: Port, selectedType?: PortType) {
+  selectPortType({port, datatype}: {port: Port, datatype?: PortType}) {
     this.showPortTypeSelectorId$.next(null);
-    if (selectedType) {
-      let ports$ = isInput(selectedPort.direction) ? this.inputs$ : this.outputs$;
-      mapEmit(ports$, port => port.id === selectedPort.id ? {...port, datatype: selectedType} : port);
+    if (datatype) {
+      let ports$ = isInput(port.direction) ? this.inputs$ : this.outputs$;
+      mapEmit(ports$, p => p.id === port.id ? {...p, datatype} : p);
     }
   }
 

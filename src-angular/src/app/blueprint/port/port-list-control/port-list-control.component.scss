@@ -1,0 +1,14 @@
+@use '../../../../variables';
+
+.port-list-control {
+    display: flex;
+    flex-direction: column;
+    &.input {
+        align-items: flex-start;
+        margin-right: 0.25em;
+    }
+    &.output {
+        align-items: flex-end;
+        margin-left: 0.25em;  
+    }
+}
