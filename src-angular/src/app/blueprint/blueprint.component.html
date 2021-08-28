@@ -9,11 +9,11 @@
     <hr>
     <div class="contract">
         <div class="inputs">
-            <div class="add-port" (click)="addInput()" [ngClass]="{'locked': isLocked$ | async}"><mat-icon>add_circle_outline</mat-icon></div>
+            <port-add-button [direction]="'input'" [locked]="(isLocked$ | async)!" (onAddPort)="addInput()"></port-add-button>
             <port-control *ngFor="let input of inputs$ | async" [port]="input" [locked]="(isLocked$ | async)!" (onSelectDatatype)="selectPortType(input, $event)" (onDeletePort)="deletePort(input)"></port-control>
         </div>
         <div class="outputs">
-            <div class="add-port" (click)="addOutput()" [ngClass]="{'locked': isLocked$ | async}"><mat-icon>add_circle_outline</mat-icon></div>
+            <port-add-button [direction]="'output'" [locked]="(isLocked$ | async)!" (onAddPort)="addOutput()"></port-add-button>
             <port-control *ngFor="let output of outputs$ | async" [port]="output" [locked]="(isLocked$ | async)!" (onSelectDatatype)="selectPortType(output, $event)" (onDeletePort)="deletePort(output)"></port-control>
         </div>
     </div>

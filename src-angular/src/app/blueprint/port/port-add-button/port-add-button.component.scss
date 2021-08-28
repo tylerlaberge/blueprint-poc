@@ -1,0 +1,23 @@
+@use '../../../../variables';
+
+.port-add-button {
+    transition: color .1s linear;
+    &.input {
+        margin-left: 0.5em;
+        color: variables.$input;
+        &.locked {
+            color: gray;
+        }
+    }
+    &.output {
+        margin-right: 0.5em;
+        color: variables.$output;
+        &.locked {
+            color: gray;
+        }
+    }
+    &:not(.locked):hover {
+        cursor: pointer;
+        color: variables.$text-primary !important;
+    }            
+}

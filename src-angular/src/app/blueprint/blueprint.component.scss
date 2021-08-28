@@ -77,38 +77,14 @@
             flex-direction: column;
             align-items: flex-start;
             margin-right: 0.25em;
-            .add-port {
-                margin-left: 0.5em;
-                color: variables.$input;
-                &.locked {
-                    color: gray;
-                }
-            }
         }
         .outputs {
             flex: 1;
             display: flex;
             flex-direction: column;
             align-items: flex-end;
-            margin-left: 0.25em;
-            .add-port {
-                margin-right: 0.5em;
-                color: variables.$output;
-                &.locked {
-                    color: gray;
-                }
-            }
-            
+            margin-left: 0.25em;  
         }
-
-        .add-port {
-            transition: color .1s linear;
-            &:not(.locked):hover {
-                cursor: pointer;
-                color: variables.$text-primary !important;
-            }            
-        }
-
     }
 
     &.mouse-down {

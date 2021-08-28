@@ -5,6 +5,7 @@ import { AppComponent } from './app.component';
 import { EditorComponent } from './editor/editor.component';
 import { PortDatatypeComponent } from './blueprint/port/port-datatype/port-datatype.component';
 import { PortDeleteButtonComponent } from './blueprint/port/port-delete-button/port-delete-button.component';
+import { PortAddButtonComponent } from './blueprint/port/port-add-button/port-add-button.component';
 import { PortCircleComponent } from './blueprint/port/port-circle/port-circle.component';
 import { PortControlComponent } from './blueprint/port/port-control.component';
 import { BlueprintComponent } from './blueprint/blueprint.component';
@@ -24,6 +25,7 @@ import { HttpClientModule } from '@angular/common/http';
     EditorComponent,
     PortDatatypeComponent,
     PortDeleteButtonComponent,
+    PortAddButtonComponent,
     PortCircleComponent,
     PortControlComponent,
     BlueprintComponent
