@@ -16,37 +16,6 @@
     box-shadow: rgba(black, 0.35) 0px 5px 15px;
     cursor: grab;
 
-    .header {
-        display: flex;
-        margin: 0;
-        padding: 0.5em;
-        border-top-left-radius: 12px;
-        border-top-right-radius: 12px;
-        color: variables.$text-primary;
-        background-color: rgba(variables.$primary, 0.5);
-        transition: background-color .1s linear;
-        &.locked {
-            background-color: rgba(variables.$background, 0.5);
-        }
-
-        .title {
-            flex: 3;
-            text-align: end;
-            font-size: 1em;
-        }
-
-        lock-button {
-            flex: 1;
-        }
-    }
-
-    hr {
-        width: 100%;
-        border-color: variables.$primary;
-        margin-top: 0;
-        margin-bottom: 0.5em;
-    }
-
     blueprint-contract {
         flex: 1;
     }

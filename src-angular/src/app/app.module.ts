@@ -4,6 +4,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { EditorComponent } from './editor/editor.component';
 import { LockButtonComponent } from './blueprint/lock-button/lock-button.component';
+import { BlueprintHeaderComponent } from './blueprint/blueprint-header/blueprint-header.component';
 import { PortDatatypeComponent } from './blueprint/port/port-datatype/port-datatype.component';
 import { PortDeleteButtonComponent } from './blueprint/port/port-delete-button/port-delete-button.component';
 import { PortAddButtonComponent } from './blueprint/port/port-add-button/port-add-button.component';
@@ -29,6 +30,7 @@ import { HttpClientModule } from '@angular/common/http';
     AppComponent,
     EditorComponent,
     LockButtonComponent,
+    BlueprintHeaderComponent,
     PortDatatypeComponent,
     PortDeleteButtonComponent,
     PortAddButtonComponent,
