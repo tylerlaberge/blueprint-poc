@@ -13,10 +13,9 @@ import { concatAll, map, filter, take } from 'rxjs/operators';
 })
 export class EditorComponent implements AfterViewInit, OnInit {
 
-  public blueprints$: BehaviorSubject<Blueprint[]> = new BehaviorSubject<Blueprint[]>([]);
-
-  private portMappings$: BehaviorSubject<{[portId: string]: BlueprintComponent}> = new BehaviorSubject<{[portId: string]: BlueprintComponent}>({});
-  private connectorMappings$: BehaviorSubject<{[blueprintId: string]: LeaderLine[]}> = new BehaviorSubject<{[blueprintId: string]: LeaderLine[]}>({});
+  _blueprints$: BehaviorSubject<Blueprint[]> = new BehaviorSubject<Blueprint[]>([]);
+  _portMappings$: BehaviorSubject<{[portId: string]: BlueprintComponent}> = new BehaviorSubject<{[portId: string]: BlueprintComponent}>({});
+  _connectorMappings$: BehaviorSubject<{[blueprintId: string]: LeaderLine[]}> = new BehaviorSubject<{[blueprintId: string]: LeaderLine[]}>({});
 
   @ViewChildren(BlueprintComponent) blueprintComponents!: QueryList<BlueprintComponent>;
 
@@ -41,7 +40,7 @@ export class EditorComponent implements AfterViewInit, OnInit {
     blueprintB.inputs[0].connection = blueprintA.outputs[0];
     blueprintB.inputs[1].connection = blueprintA.outputs[1];
 
-    this.blueprints$.next([blueprintA, blueprintB]);
+    this._blueprints$.next([blueprintA, blueprintB]);
   }
 
   ngAfterViewInit(): void {
@@ -63,7 +62,7 @@ export class EditorComponent implements AfterViewInit, OnInit {
         allPortMappings = {...allPortMappings, ...blueprintPortMappings};
       });
     });
-    this.portMappings$.next(allPortMappings);
+    this._portMappings$.next(allPortMappings);
   }
 
   private initPortConnections() {
@@ -76,7 +75,7 @@ export class EditorComponent implements AfterViewInit, OnInit {
         map(connectedInput => [connectedInput.id, connectedInput.connection!.id])
       ).subscribe(([inputPortId, outputPortId]) => {
         let inputBlueprint = blueprint;
-        let outputBlueprint = this.portMappings$.getValue()[outputPortId];
+        let outputBlueprint = this._portMappings$.getValue()[outputPortId];
         let connector = this.drawPortConnector(outputBlueprint.getOutputPortElement(outputPortId), inputBlueprint.getInputPortElement(inputPortId));
         if (allConnectorMappings[inputBlueprint.identifier]) {
           allConnectorMappings[inputBlueprint.identifier].push(connector);
@@ -86,7 +85,7 @@ export class EditorComponent implements AfterViewInit, OnInit {
           allConnectorMappings[outputBlueprint.identifier] = [connector];
         }
       });
-      this.connectorMappings$.next(allConnectorMappings);
+      this._connectorMappings$.next(allConnectorMappings);
     });
   }
 
@@ -105,7 +104,7 @@ export class EditorComponent implements AfterViewInit, OnInit {
   }
 
   handleBlueprintMove(blueprintId: string) {
-    let connectors: LeaderLine[] = this.connectorMappings$.getValue()[blueprintId] || [];
+    let connectors: LeaderLine[] = this._connectorMappings$.getValue()[blueprintId] || [];
     connectors.forEach(connector => connector.position());
   }
 }

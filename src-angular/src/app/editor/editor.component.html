@@ -1,5 +1,5 @@
 <div class="editor">
-    <div *ngFor="let blueprint of blueprints$ | async" class="blueprint-container"  [ngStyle]="{'left': blueprint.position.x + 'px', 'top': blueprint.position.y + 'px'}">
+    <div *ngFor="let blueprint of _blueprints$ | async" class="blueprint-container"  [ngStyle]="{'left': blueprint.position.x + 'px', 'top': blueprint.position.y + 'px'}">
         <app-blueprint [blueprint]="blueprint" (onDrag)="handleBlueprintMove($event)"></app-blueprint>
     </div>
 </div>
