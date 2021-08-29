@@ -1,9 +1,9 @@
-<div class="blueprint" cdkDrag (cdkDragMoved)="drag()" (mousedown)="grab()" (mouseup)="release()" [ngClass]="{'mouse-down': isDragging$ | async, 'locked': isLocked$ | async}">
-    <blueprint-header [locked]="(isLocked$ | async)!" [title]="'POST /todos'" (onToggleLock)="toggleLock()"></blueprint-header>
+<div class="blueprint" cdkDrag (cdkDragMoved)="drag()" (mousedown)="grab()" (mouseup)="release()" [ngClass]="{'mouse-down': _dragging$ | async, 'locked': _locked$ | async}">
+    <blueprint-header [locked]="(_locked$ | async)!" [title]="'POST /todos'" (onToggleLock)="toggleLock()"></blueprint-header>
     <blueprint-contract 
-        [inputs]="(inputs$ | async)!" 
-        [outputs]="(outputs$ | async)!" 
-        [locked]="(isLocked$ | async)!" 
+        [inputs]="(_inputs$ | async)!" 
+        [outputs]="(_outputs$ | async)!" 
+        [locked]="(_locked$ | async)!" 
         (onAddInput)="addInput()" 
         (onAddOutput)="addOutput()" 
         (onDeleteInput)="deletePort($event!)"

@@ -1,5 +1,6 @@
 import { Component, OnInit, Output, EventEmitter, Input, ViewChild } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { filter } from 'rxjs/operators';
 import { Blueprint, Port, PortType } from 'src/types/blueprint';
 import { v4 as uuid } from 'uuid';
 import { appendEmit, mapEmit, filterEmit } from '../../utils/rxjs/utils';
@@ -14,43 +15,56 @@ export class BlueprintComponent implements OnInit {
 
   public identifier: string = uuid();
 
-  public inputs$: BehaviorSubject<Port[]> = new BehaviorSubject<Port[]>([]);
-  public outputs$: BehaviorSubject<Port[]> = new BehaviorSubject<Port[]>([]);
-  public portTypes$: BehaviorSubject<PortType[]> = new BehaviorSubject<PortType[]>(['number', 'bool', 'string', 'object']); 
-  
-  public isDragging$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  public isLocked$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  public showPortTypeSelectorId$: BehaviorSubject<string | null> = new BehaviorSubject<string | null>(null);
+  _blueprint$: BehaviorSubject<Blueprint | null> = new BehaviorSubject<Blueprint | null>(null);
 
-  @Input() blueprint!: Blueprint;
+  _inputs$: BehaviorSubject<Port[]> = new BehaviorSubject<Port[]>([]);
+  _outputs$: BehaviorSubject<Port[]> = new BehaviorSubject<Port[]>([]);
+  _dragging$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  _locked$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+
+  @Input() set blueprint(value: Blueprint) { this._blueprint$.next(value); };
+
   @Output() onDrag = new EventEmitter<string>();
 
-  @ViewChild(BlueprintContractComponent) blueprintContactControl!: BlueprintContractComponent;
+  @ViewChild(BlueprintContractComponent) blueprintContractControl!: BlueprintContractComponent;
 
   ngOnInit(): void {
-    this.blueprint.inputs.forEach(input => this.addInput(input));
-    this.blueprint.outputs.forEach(output => this.addOutput(output));
-    this.isLocked$.next(true);
+    this._blueprint$
+      .pipe(
+        filter(blueprint => blueprint !== null)
+      ).subscribe(blueprint => {
+        blueprint!.inputs.forEach(input => this.addInput(input));
+        blueprint!.outputs.forEach(output => this.addOutput(output));
+        this._locked$.next(true);
+      });
+  }
+
+  getInputs(): Observable<Port[]> {
+    return this._inputs$;
+  }
+
+  getOutputs(): Observable<Port[]> {
+    return this._outputs$;
   }
 
   getInputPortElement(inputPortId: string): HTMLElement {
-    return this.blueprintContactControl.getInputControls()
+    return this.blueprintContractControl.getInputControls()
       .map(portControl => portControl.portCircleComponent.elementRef.nativeElement)
       .find(nativeElement => nativeElement.getAttribute('id') === inputPortId);
   }
 
   getOutputPortElement(outputPortId: string): HTMLElement {
-    return this.blueprintContactControl.getOutputControls()
+    return this.blueprintContractControl.getOutputControls()
       .map(portControl => portControl.portCircleComponent.elementRef.nativeElement)
       .find(nativeElement => nativeElement.getAttribute('id') === outputPortId);
   }
 
   grab() {
-    this.isDragging$.next(true);
+    this._dragging$.next(true);
   }
 
   release() {
-    this.isDragging$.next(false);
+    this._dragging$.next(false);
   }
 
   drag() {
@@ -58,32 +72,31 @@ export class BlueprintComponent implements OnInit {
   }
   
   addInput(input: Port = {id: uuid(), direction: 'input', datatype: 'number'}) {
-    if (!this.isLocked$.getValue()) {
-      appendEmit(this.inputs$, {...input, direction: 'input'});
+    if (!this._locked$.getValue()) {
+      appendEmit(this._inputs$, {...input, direction: 'input'});
     }
   }
 
   addOutput(output: Port = {id: uuid(), direction: 'output', datatype: 'number'}) {
-    if (!this.isLocked$.getValue()) {
-      appendEmit(this.outputs$, {...output, direction: 'output'});
+    if (!this._locked$.getValue()) {
+      appendEmit(this._outputs$, {...output, direction: 'output'});
     }
   }
 
   selectPortType({port, datatype}: {port: Port, datatype?: PortType}) {
-    this.showPortTypeSelectorId$.next(null);
     if (datatype) {
-      let ports$ = isInput(port.direction) ? this.inputs$ : this.outputs$;
+      let ports$ = isInput(port.direction) ? this._inputs$ : this._outputs$;
       mapEmit(ports$, p => p.id === port.id ? {...p, datatype} : p);
     }
   }
 
   deletePort(selectedPort: Port) {
-    let ports$ = isInput(selectedPort.direction) ? this.inputs$ : this.outputs$;
+    let ports$ = isInput(selectedPort.direction) ? this._inputs$ : this._outputs$;
     filterEmit(ports$, port => port.id !== selectedPort.id);
   }
 
   toggleLock() {
-    this.isLocked$.next(!this.isLocked$.getValue());
+    this._locked$.next(!this._locked$.getValue());
   }
 }
 

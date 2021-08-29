@@ -52,7 +52,7 @@ export class EditorComponent implements AfterViewInit, OnInit {
   private updatePortMappings() {
     let allPortMappings = {};
     this.blueprintComponents.forEach(blueprint => {
-      combineLatest([blueprint.inputs$, blueprint.outputs$]).pipe(
+      combineLatest([blueprint.getInputs(), blueprint.getOutputs()]).pipe(
         take(1),
         map(([inputs, outputs]) => inputs.map(i => i.id).concat(outputs.map(o => o.id))),
         map((portIds) => portIds.reduce<{[portId: string]: BlueprintComponent}>((mappings, portId) => {
@@ -69,7 +69,7 @@ export class EditorComponent implements AfterViewInit, OnInit {
   private initPortConnections() {
     let allConnectorMappings: {[blueprintId: string]: LeaderLine[]} = {};
     this.blueprintComponents.forEach(blueprint => {
-      blueprint.inputs$.pipe(
+      blueprint.getInputs().pipe(
         take(1),
         concatAll(),
         filter(input => !!input.connection),
