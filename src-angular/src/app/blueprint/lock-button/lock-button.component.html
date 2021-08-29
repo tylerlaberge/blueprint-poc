@@ -1,0 +1,6 @@
+<div class="lock-button">
+    <span (click)="clickLockButton()" [ngClass]="{'open': !(_locked$ | async), 'closed': _locked$ | async}">
+        <mat-icon *ngIf="!(_locked$ | async)">lock_open</mat-icon>
+        <mat-icon *ngIf="_locked$ | async">lock</mat-icon>
+    </span>
+</div>

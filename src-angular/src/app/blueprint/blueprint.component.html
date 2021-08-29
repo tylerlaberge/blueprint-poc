@@ -1,10 +1,7 @@
 <div class="blueprint" cdkDrag (cdkDragMoved)="drag()" (mousedown)="grab()" (mouseup)="release()" [ngClass]="{'mouse-down': isDragging$ | async, 'locked': isLocked$ | async}">
     <div class="header" [ngClass]="{'locked': isLocked$ | async}">
         <h1 class="title">POST /todos</h1>
-        <span class="lock-button open" (click)="toggleLock()" [ngClass]="{'open': !(isLocked$ | async), 'closed': isLocked$ | async}">
-            <mat-icon *ngIf="!(isLocked$ | async)">lock_open</mat-icon>
-            <mat-icon *ngIf="isLocked$ | async">lock</mat-icon>
-        </span>
+        <lock-button [locked]="(isLocked$ | async)!" (onToggleLock)="toggleLock()"></lock-button>
     </div>
     <hr>
     <blueprint-contract 

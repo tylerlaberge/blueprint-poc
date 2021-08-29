@@ -34,30 +34,9 @@
             text-align: end;
             font-size: 1em;
         }
-    
-        .lock-button {
+
+        lock-button {
             flex: 1;
-            text-align: right;
-            align-self: center;
-            transition: color .1s linear;
-            &.open {
-                color: rgba(variables.$background, 0.75);
-                &:hover {
-                    color: rgba(variables.$background, 1);
-                    cursor: pointer;
-                }
-            }
-            &.closed {
-                color: rgba(variables.$primary, 0.5);
-                &:hover {
-                    color: variables.$primary;
-                    cursor: pointer;
-                }
-            }
-            mat-icon {
-                font-size: 1.5em !important;
-                line-height: 1.5em;
-            }
         }
     }
 
