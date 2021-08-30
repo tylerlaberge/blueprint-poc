@@ -1,11 +1,11 @@
 import { AfterViewInit, Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { BehaviorSubject, combineLatest, Subject } from 'rxjs';
-import { Blueprint } from 'src/types/blueprint';
+import { Blueprint, Port } from 'src/types/blueprint';
 import { BlueprintComponent } from '../blueprint/blueprint.component';
 import { v4 as uuid } from 'uuid';
 import { concatAll, map, filter, take } from 'rxjs/operators';
 import { PortControlComponent } from '../blueprint/port/port-control/port-control.component';
-import { appendEmit } from 'src/utils/rxjs/utils';
+import { appendEmit, filterEmit, mapEmit } from 'src/utils/rxjs/utils';
 
 @Component({
   selector: 'app-editor',
@@ -88,6 +88,32 @@ export class EditorComponent implements AfterViewInit, OnInit {
 
   handleBlueprintMove(blueprintId: string) {
     this._refreshWirings$.next();
+  }
+
+  handlePortChange(blueprint: BlueprintComponent, port: Port) {
+    mapEmit(this._blueprintWirings$, (wiring: BlueprintWiring) => {
+      if (wiring.input.getIdentifier() === port.id) {
+        return {input: blueprint.getInputPortControl(port.id)!, output: wiring.output};
+      } else if (wiring.output.getIdentifier() === port.id) {
+        return {input: wiring.input, output: blueprint.getOutputPortControl(port.id)!};
+      } else {
+        return wiring;
+      }
+    });
+  }
+
+  handleDestroyInputPort(portControl: PortControlComponent) {
+    setTimeout(() => {
+      filterEmit(this._blueprintWirings$, wiring => wiring.input.getIdentifier() !== portControl.getIdentifier())
+      setTimeout(() => this._refreshWirings$.next());
+    });
+  }
+
+  handleDestroyOutputPort(portControl: PortControlComponent) {
+    setTimeout(() => {
+      filterEmit(this._blueprintWirings$, wiring => wiring.output.getIdentifier() !== portControl.getIdentifier());
+      setTimeout(() => this._refreshWirings$.next());
+    });
   }
 }
 

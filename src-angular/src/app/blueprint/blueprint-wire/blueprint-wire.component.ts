@@ -1,6 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import * as LeaderLine from 'leader-line-new';
-import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
+import { BehaviorSubject, combineLatest, Observable, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { PortControlComponent } from '../port/port-control/port-control.component';
 
@@ -9,8 +9,9 @@ import { PortControlComponent } from '../port/port-control/port-control.componen
   templateUrl: './blueprint-wire.component.html',
   styleUrls: ['./blueprint-wire.component.scss']
 })
-export class BlueprintWireComponent implements OnInit {
+export class BlueprintWireComponent implements OnInit, OnDestroy {
 
+    private _subscriptions: Subscription[] = [];
     private _leaderLine$: BehaviorSubject<LeaderLine | null> = new BehaviorSubject<LeaderLine | null>(null);
 
     _inputPort$: BehaviorSubject<PortControlComponent | null> = new BehaviorSubject<PortControlComponent | null>(null);
@@ -22,16 +23,20 @@ export class BlueprintWireComponent implements OnInit {
     @Input() set refresh(value: Observable<void>) { this._refresh$ = value; }
 
     ngOnInit() {
-        this._leaderLine$.subscribe(leaderLine => leaderLine?.position());
-        this._refresh$.subscribe(() => this._leaderLine$.getValue()?.position());
+      this._subscriptions.push(this._leaderLine$.subscribe(leaderLine => leaderLine?.position()));
+      this._subscriptions.push(this._refresh$.subscribe(() => this._leaderLine$.getValue()?.position()));
+      this._subscriptions.push(combineLatest([this._inputPort$, this._outputPort$])
+          .pipe(
+              filter(([input, output]) => !!input && !!output),
+          ).subscribe(([input, output]) => {
+              this._leaderLine$.getValue()?.remove();
+              this._leaderLine$.next(this.drawLeaderLine(output!.getPortElement(), input!.getPortElement()))
+          }));
+    }
 
-        combineLatest([this._inputPort$, this._outputPort$])
-            .pipe(
-                filter(([input, output]) => !!input && !!output),
-            ).subscribe(([input, output]) => {
-                this._leaderLine$.getValue()?.remove();
-                this._leaderLine$.next(this.drawLeaderLine(output!.getPortElement(), input!.getPortElement()))
-            });
+    ngOnDestroy() {
+      this._subscriptions.forEach(sub => sub.unsubscribe());
+      this._leaderLine$.getValue()?.remove();
     }
 
     private drawLeaderLine(start: HTMLElement, end: HTMLElement): LeaderLine {

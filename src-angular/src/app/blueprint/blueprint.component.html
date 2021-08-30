@@ -10,5 +10,7 @@
         (onDeleteOutput)="deletePort($event!)" 
         (onSelectInputDatatype)="selectPortType($event!)"
         (onSelectOutputDatatype)="selectPortType($event!)"
+        (onDestroyInputPort)="notifyDestroyInputPort($event)"
+        (onDestroyOutputPort)="notifyDestroyOutputPort($event)"
     ></blueprint-contract>
 </div>

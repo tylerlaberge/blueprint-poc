@@ -26,7 +26,10 @@ export class BlueprintComponent implements OnInit {
   @Input() set blueprint(value: Blueprint) { this._blueprint$.next(value); };
 
   @Output() onDrag = new EventEmitter<string>();
-
+  @Output() onChange = new EventEmitter<Port>();
+  @Output() onDestroyInputPort = new EventEmitter<PortControlComponent>();
+  @Output() onDestroyOutputPort = new EventEmitter<PortControlComponent>();
+  
   @ViewChild(BlueprintContractComponent) blueprintContractControl!: BlueprintContractComponent;
 
   ngOnInit(): void {
@@ -84,8 +87,10 @@ export class BlueprintComponent implements OnInit {
 
   selectPortType({port, datatype}: {port: Port, datatype?: PortType}) {
     if (datatype) {
+      let updatedPort = {...port, datatype};
       let ports$ = isInput(port.direction) ? this._inputs$ : this._outputs$;
-      mapEmit(ports$, p => p.id === port.id ? {...p, datatype} : p);
+      mapEmit(ports$, p => p.id === port.id ? updatedPort : p);
+      this.onChange.emit(updatedPort);
     }
   }
 
@@ -96,6 +101,14 @@ export class BlueprintComponent implements OnInit {
 
   toggleLock() {
     this._locked$.next(!this._locked$.getValue());
+  }
+
+  notifyDestroyInputPort(portControl: PortControlComponent) {
+    this.onDestroyInputPort.emit(portControl);
+  }
+
+  notifyDestroyOutputPort(portControl: PortControlComponent) {
+    this.onDestroyOutputPort.emit(portControl);
   }
 }
 

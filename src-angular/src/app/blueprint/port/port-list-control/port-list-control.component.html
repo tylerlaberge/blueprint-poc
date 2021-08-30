@@ -1,4 +1,8 @@
 <div class="port-list-control" [ngClass]="{'input': isInput(), 'output': isOutput()}">
     <port-add-button [direction]="(_direction$ | async)!" [locked]="(_locked$ | async)!" (onAddPort)="addPort()"></port-add-button>
-    <port-control *ngFor="let port of _ports$ | async" [port]="port!" [locked]="(_locked$ | async)!" (onSelectDatatype)="selectDatatype(port!, $event)" (onDeletePort)="deletePort(port!)"></port-control>
+    <port-control #portControl *ngFor="let port of _ports$ | async" [port]="port!" [locked]="(_locked$ | async)!" 
+        (onSelectDatatype)="selectDatatype(port!, $event)" 
+        (onDeletePort)="deletePort(port!)"
+        (onDestroy)="notifyDestroyPort(portControl)"
+    ></port-control>
 </div>

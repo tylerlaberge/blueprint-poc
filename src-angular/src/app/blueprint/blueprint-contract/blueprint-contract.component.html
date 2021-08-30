@@ -4,13 +4,15 @@
         [locked]="(_locked$ | async)!" 
         (onAddInput)="addInput()" 
         (onDeleteInput)="deleteInput($event!)" 
-        (onSelectInputDatatype)="selectInputDatatype($event!)">
+        (onSelectInputDatatype)="selectInputDatatype($event!)"
+        (onDestroyInputPort)="notifyDestroyInputPort($event)">
     </blueprint-inputs>
     <blueprint-outputs 
         [outputs]="(_outputs$ | async)!" 
         [locked]="(_locked$ | async)!" 
         (onAddOutput)="addOutput()" 
         (onDeleteOutput)="deleteOutput($event!)" 
-        (onSelectOutputDatatype)="selectOutputDatatype($event!)">
+        (onSelectOutputDatatype)="selectOutputDatatype($event!)"
+        (onDestroyOutputPort)="notifyDestroyOutputPort($event)">
     </blueprint-outputs>
 </div>

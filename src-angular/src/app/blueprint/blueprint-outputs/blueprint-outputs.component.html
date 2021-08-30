@@ -5,6 +5,7 @@
         [locked]="(_locked$ | async)!" 
         (onAddPort)="addOutput()" 
         (onDeletePort)="deleteOutput($event!)" 
-        (onSelectDatatype)="selectOutputDatatype($event!)">
+        (onSelectDatatype)="selectOutputDatatype($event!)"
+        (onDestroyPort)="notifyDestroyOutputPort($event)">
     </port-list-control>
 </div>

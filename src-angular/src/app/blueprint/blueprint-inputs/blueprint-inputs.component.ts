@@ -20,6 +20,7 @@ export class BlueprintInputsComponent {
   @Output() onAddInput = new EventEmitter<void>();
   @Output() onSelectInputDatatype = new EventEmitter<{port: Port, datatype?: PortType}>();
   @Output() onDeleteInput = new EventEmitter<Port>();
+  @Output() onDestroyInputPort = new EventEmitter<PortControlComponent>();
 
   @ViewChildren(PortListControlComponent) portListControls!: QueryList<PortListControlComponent>;
 
@@ -38,5 +39,9 @@ export class BlueprintInputsComponent {
 
   selectInputDatatype({port, datatype}: {port: Port, datatype?: PortType}) {
     this.onSelectInputDatatype.emit({port, datatype});
+  }
+
+  notifyDestroyInputPort(portControl: PortControlComponent) {
+    this.onDestroyInputPort.emit(portControl);
   }
 }

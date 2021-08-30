@@ -1,6 +1,12 @@
 <div class="editor">
     <div *ngFor="let blueprint of _blueprints$ | async" class="blueprint-container"  [ngStyle]="{'left': blueprint.position.x + 'px', 'top': blueprint.position.y + 'px'}">
-        <blueprint [blueprint]="blueprint" (onDrag)="handleBlueprintMove($event)"></blueprint>
+        <blueprint #component 
+            [blueprint]="blueprint" 
+            (onDrag)="handleBlueprintMove($event)" 
+            (onChange)="handlePortChange(component, $event)"
+            (onDestroyInputPort)="handleDestroyInputPort($event)"
+            (onDestroyOutputPort)="handleDestroyOutputPort($event)">
+        </blueprint>
     </div>
     <blueprint-wire *ngFor="let wiring of _blueprintWirings$ | async" [input]="wiring.input" [output]="wiring.output" [refresh]="_refreshWirings$"></blueprint-wire>
 </div>

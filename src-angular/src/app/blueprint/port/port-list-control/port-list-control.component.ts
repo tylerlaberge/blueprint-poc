@@ -21,6 +21,7 @@ export class PortListControlComponent {
     @Output() onAddPort = new EventEmitter<void>();
     @Output() onSelectDatatype = new EventEmitter<{port: Port, datatype?: PortType}>();
     @Output() onDeletePort = new EventEmitter<Port>();
+    @Output() onDestroyPort = new EventEmitter<PortControlComponent>();
 
     @ViewChildren(PortControlComponent) portControls!: QueryList<PortControlComponent>;
 
@@ -38,6 +39,10 @@ export class PortListControlComponent {
 
     deletePort(port: Port) {
       this.onDeletePort.emit(port);
+    }
+
+    notifyDestroyPort(portControl: PortControlComponent) {
+      this.onDestroyPort.emit(portControl);
     }
 
     isInput(): boolean {
