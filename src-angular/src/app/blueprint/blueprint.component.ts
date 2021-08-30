@@ -5,6 +5,7 @@ import { Blueprint, Port, PortType } from 'src/types/blueprint';
 import { v4 as uuid } from 'uuid';
 import { appendEmit, mapEmit, filterEmit } from '../../utils/rxjs/utils';
 import { BlueprintContractComponent } from './blueprint-contract/blueprint-contract.component';
+import { PortControlComponent } from './port/port-control/port-control.component';
 
 @Component({
   selector: 'app-blueprint',
@@ -47,16 +48,14 @@ export class BlueprintComponent implements OnInit {
     return this._outputs$;
   }
 
-  getInputPortElement(inputPortId: string): HTMLElement {
+  getInputPortControl(inputPortId: string): PortControlComponent | undefined {
     return this.blueprintContractControl.getInputControls()
-      .map(portControl => portControl.portCircleComponent.elementRef.nativeElement)
-      .find(nativeElement => nativeElement.getAttribute('id') === inputPortId);
+      .find(portControl => portControl.getIdentifier() === inputPortId);
   }
 
-  getOutputPortElement(outputPortId: string): HTMLElement {
+  getOutputPortControl(outputPortId: string): PortControlComponent | undefined {
     return this.blueprintContractControl.getOutputControls()
-      .map(portControl => portControl.portCircleComponent.elementRef.nativeElement)
-      .find(nativeElement => nativeElement.getAttribute('id') === outputPortId);
+      .find(portControl => portControl.getIdentifier() === outputPortId);
   }
 
   grab() {

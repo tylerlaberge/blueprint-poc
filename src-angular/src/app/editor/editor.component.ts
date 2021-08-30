@@ -1,10 +1,11 @@
 import { AfterViewInit, Component, OnInit, QueryList, ViewChildren } from '@angular/core';
-import * as LeaderLine from 'leader-line-new';
-import { BehaviorSubject, combineLatest } from 'rxjs';
+import { BehaviorSubject, combineLatest, Subject } from 'rxjs';
 import { Blueprint } from 'src/types/blueprint';
 import { BlueprintComponent } from '../blueprint/blueprint.component';
 import { v4 as uuid } from 'uuid';
 import { concatAll, map, filter, take } from 'rxjs/operators';
+import { PortControlComponent } from '../blueprint/port/port-control/port-control.component';
+import { appendEmit } from 'src/utils/rxjs/utils';
 
 @Component({
   selector: 'app-editor',
@@ -14,8 +15,10 @@ import { concatAll, map, filter, take } from 'rxjs/operators';
 export class EditorComponent implements AfterViewInit, OnInit {
 
   _blueprints$: BehaviorSubject<Blueprint[]> = new BehaviorSubject<Blueprint[]>([]);
+  _blueprintWirings$: BehaviorSubject<BlueprintWiring[]> = new BehaviorSubject<BlueprintWiring[]>([]);
   _portMappings$: BehaviorSubject<{[portId: string]: BlueprintComponent}> = new BehaviorSubject<{[portId: string]: BlueprintComponent}>({});
-  _connectorMappings$: BehaviorSubject<{[blueprintId: string]: LeaderLine[]}> = new BehaviorSubject<{[blueprintId: string]: LeaderLine[]}>({});
+
+  _refreshWirings$: Subject<void> = new Subject();
 
   @ViewChildren(BlueprintComponent) blueprintComponents!: QueryList<BlueprintComponent>;
 
@@ -66,7 +69,6 @@ export class EditorComponent implements AfterViewInit, OnInit {
   }
 
   private initPortConnections() {
-    let allConnectorMappings: {[blueprintId: string]: LeaderLine[]} = {};
     this.blueprintComponents.forEach(blueprint => {
       blueprint.getInputs().pipe(
         take(1),
@@ -76,35 +78,20 @@ export class EditorComponent implements AfterViewInit, OnInit {
       ).subscribe(([inputPortId, outputPortId]) => {
         let inputBlueprint = blueprint;
         let outputBlueprint = this._portMappings$.getValue()[outputPortId];
-        let connector = this.drawPortConnector(outputBlueprint.getOutputPortElement(outputPortId), inputBlueprint.getInputPortElement(inputPortId));
-        if (allConnectorMappings[inputBlueprint.identifier]) {
-          allConnectorMappings[inputBlueprint.identifier].push(connector);
-          allConnectorMappings[outputBlueprint.identifier].push(connector);
-        } else {
-          allConnectorMappings[inputBlueprint.identifier] = [connector];
-          allConnectorMappings[outputBlueprint.identifier] = [connector];
-        }
+        setTimeout(() => appendEmit(this._blueprintWirings$, {
+          input: inputBlueprint.getInputPortControl(inputPortId)!, 
+          output: outputBlueprint.getOutputPortControl(outputPortId)!
+        }));
       });
-      this._connectorMappings$.next(allConnectorMappings);
-    });
-  }
-
-  private drawPortConnector(start: HTMLElement, end: HTMLElement): LeaderLine {
-    return new LeaderLine(start, end, {
-      startPlugColor: '#da8b66',
-      endPlugColor: '#9eda66',
-      gradient: true,
-      endPlug: 'behind',
-      dash: {animation: {duration: 150, timing: 'linear'}},
-      startSocket: 'right',
-      endSocket: 'left',
-      startSocketGravity: [100, 0],
-      endSocketGravity: [-100, 0]
     });
   }
 
   handleBlueprintMove(blueprintId: string) {
-    let connectors: LeaderLine[] = this._connectorMappings$.getValue()[blueprintId] || [];
-    connectors.forEach(connector => connector.position());
+    this._refreshWirings$.next();
   }
 }
+
+interface BlueprintWiring {
+  input: PortControlComponent,
+  output: PortControlComponent
+};

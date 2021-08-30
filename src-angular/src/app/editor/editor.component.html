@@ -2,4 +2,5 @@
     <div *ngFor="let blueprint of _blueprints$ | async" class="blueprint-container"  [ngStyle]="{'left': blueprint.position.x + 'px', 'top': blueprint.position.y + 'px'}">
         <app-blueprint [blueprint]="blueprint" (onDrag)="handleBlueprintMove($event)"></app-blueprint>
     </div>
+    <blueprint-wire *ngFor="let wiring of _blueprintWirings$ | async" [input]="wiring.input" [output]="wiring.output" [refresh]="_refreshWirings$"></blueprint-wire>
 </div>
