@@ -8,7 +8,7 @@ import { BlueprintContractComponent } from './blueprint-contract/blueprint-contr
 import { PortControlComponent } from './port/port-control/port-control.component';
 
 @Component({
-  selector: 'app-blueprint',
+  selector: 'blueprint',
   templateUrl: './blueprint.component.html',
   styleUrls: ['./blueprint.component.scss']
 })
