@@ -16,6 +16,7 @@ export class PortControlComponent implements OnDestroy {
     @Input() set port(value: Port) { this._port$.next(value); };
     @Input() set locked(value: boolean) { this._locked$.next(value); };
 
+    @Output() onClickPort = new EventEmitter<void>();
     @Output() onSelectDatatype = new EventEmitter<PortType>();
     @Output() onDeletePort = new EventEmitter<void>();
     @Output() onDestroy = new EventEmitter<void>();
@@ -40,6 +41,10 @@ export class PortControlComponent implements OnDestroy {
 
     deletePort() {
         this.onDeletePort.emit();
+    }
+
+    clickPort() {
+        this.onClickPort.emit();
     }
 
     isInput(): boolean {

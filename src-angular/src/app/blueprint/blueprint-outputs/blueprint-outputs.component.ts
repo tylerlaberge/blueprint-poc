@@ -21,6 +21,7 @@ export class BlueprintOutputsComponent {
   @Output() onSelectOutputDatatype = new EventEmitter<{port: Port, datatype?: PortType}>();
   @Output() onDeleteOutput = new EventEmitter<Port>();
   @Output() onDestroyOutputPort = new EventEmitter<PortControlComponent>();
+  @Output() onClickOutputPort = new EventEmitter<PortControlComponent>();
 
   @ViewChildren(PortListControlComponent) portListControls!: QueryList<PortListControlComponent>;
 
@@ -43,5 +44,9 @@ export class BlueprintOutputsComponent {
 
   notifyDestroyOutputPort(portControl: PortControlComponent) {
     this.onDestroyOutputPort.emit(portControl);
+  }
+
+  clickOutputPort(portControl: PortControlComponent) {
+    this.onClickOutputPort.emit(portControl);
   }
 }

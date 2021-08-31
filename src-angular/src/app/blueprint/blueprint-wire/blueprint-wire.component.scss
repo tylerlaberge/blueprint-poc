@@ -1,6 +1,7 @@
 .wire-start, .wire-end {
     width: 1em;
     height: 1em;
-    visibility: visible;
+    visibility: hidden;
     padding: 1px;
+    position: absolute;
 }

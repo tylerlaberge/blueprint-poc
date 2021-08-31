@@ -24,11 +24,13 @@ export class BlueprintContractComponent {
   @Output() onSelectInputDatatype = new EventEmitter<{port: Port, datatype?: PortType}>();
   @Output() onDeleteInput = new EventEmitter<Port>();
   @Output() onDestroyInputPort = new EventEmitter<PortControlComponent>();
+  @Output() onClickInputPort = new EventEmitter<PortControlComponent>();
 
   @Output() onAddOutput = new EventEmitter<void>();
   @Output() onSelectOutputDatatype = new EventEmitter<{port: Port, datatype?: PortType}>();
   @Output() onDeleteOutput = new EventEmitter<Port>();
   @Output() onDestroyOutputPort = new EventEmitter<PortControlComponent>();
+  @Output() onClickOutputPort = new EventEmitter<PortControlComponent>();
 
   @ViewChild(BlueprintInputsComponent) blueprintInputsControl!: BlueprintInputsComponent;
   @ViewChild(BlueprintOutputsComponent) blueprintOutputsControl!: BlueprintOutputsComponent;
@@ -71,5 +73,13 @@ export class BlueprintContractComponent {
 
   notifyDestroyOutputPort(portControl: PortControlComponent) {
     this.onDestroyOutputPort.emit(portControl);
+  }
+
+  clickInputPort(portControl: PortControlComponent) {
+    this.onClickInputPort.emit(portControl);
+  }
+
+  clickOutputPort(portControl: PortControlComponent) {
+    this.onClickOutputPort.emit(portControl);
   }
 }

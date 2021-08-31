@@ -1,1 +1,6 @@
-<div #portCircleRef id="{{_id$ | async}}" class="port-circle" [ngClass]="{'input': isInput(), 'output': isOutput(), 'locked': _locked$ | async}"></div>
+<div #portCircleRef 
+    id="{{_id$ | async}}" 
+    class="port-circle" 
+    [ngClass]="{'input': isInput(), 'output': isOutput(), 'locked': _locked$ | async}"
+    (mousedown)="clickPort()"
+></div>

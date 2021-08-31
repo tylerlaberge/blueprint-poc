@@ -6,6 +6,7 @@
         (onAddPort)="addOutput()" 
         (onDeletePort)="deleteOutput($event!)" 
         (onSelectDatatype)="selectOutputDatatype($event!)"
-        (onDestroyPort)="notifyDestroyOutputPort($event)">
+        (onDestroyPort)="notifyDestroyOutputPort($event)"
+        (onClickPort)="clickOutputPort($event!)">
     </port-list-control>
 </div>

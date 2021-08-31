@@ -5,7 +5,8 @@
         (onAddInput)="addInput()" 
         (onDeleteInput)="deleteInput($event!)" 
         (onSelectInputDatatype)="selectInputDatatype($event!)"
-        (onDestroyInputPort)="notifyDestroyInputPort($event)">
+        (onDestroyInputPort)="notifyDestroyInputPort($event)"
+        (onClickInputPort)="clickInputPort($event!)">
     </blueprint-inputs>
     <blueprint-outputs 
         [outputs]="(_outputs$ | async)!" 
@@ -13,6 +14,7 @@
         (onAddOutput)="addOutput()" 
         (onDeleteOutput)="deleteOutput($event!)" 
         (onSelectOutputDatatype)="selectOutputDatatype($event!)"
-        (onDestroyOutputPort)="notifyDestroyOutputPort($event)">
+        (onDestroyOutputPort)="notifyDestroyOutputPort($event)"
+        (onClickOutputPort)="clickOutputPort($event!)">
     </blueprint-outputs>
 </div>

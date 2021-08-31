@@ -5,7 +5,9 @@
             (onDrag)="handleBlueprintMove($event)" 
             (onChange)="handlePortChange(component, $event)"
             (onDestroyInputPort)="handleDestroyInputPort($event)"
-            (onDestroyOutputPort)="handleDestroyOutputPort($event)">
+            (onDestroyOutputPort)="handleDestroyOutputPort($event)"
+            (onClickInputPort)="handleClickInputPort($event)"
+            (onClickOutputPort)="handleClickOutputPort($event)">
         </blueprint>
     </div>
     <blueprint-wire *ngFor="let wiring of _blueprintWirings$ | async" [input]="wiring.input" [output]="wiring.output" [refresh]="_refreshWirings$"></blueprint-wire>

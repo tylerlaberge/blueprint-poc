@@ -29,7 +29,9 @@ export class BlueprintComponent implements OnInit {
   @Output() onChange = new EventEmitter<Port>();
   @Output() onDestroyInputPort = new EventEmitter<PortControlComponent>();
   @Output() onDestroyOutputPort = new EventEmitter<PortControlComponent>();
-  
+  @Output() onClickInputPort = new EventEmitter<PortControlComponent>();
+  @Output() onClickOutputPort = new EventEmitter<PortControlComponent>();
+
   @ViewChild(BlueprintContractComponent) blueprintContractControl!: BlueprintContractComponent;
 
   ngOnInit(): void {
@@ -109,6 +111,14 @@ export class BlueprintComponent implements OnInit {
 
   notifyDestroyOutputPort(portControl: PortControlComponent) {
     this.onDestroyOutputPort.emit(portControl);
+  }
+
+  clickInputPort(portControl: PortControlComponent) {
+    this.onClickInputPort.emit(portControl);
+  }
+
+  clickOutputPort(portControl: PortControlComponent) {
+    this,this.onClickOutputPort.emit(portControl);
   }
 }
 

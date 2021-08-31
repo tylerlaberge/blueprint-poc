@@ -1,6 +1,6 @@
 <div class="port-control" *ngIf="_port$ | async; let port" [ngClass]="{'input': isInput(), 'output': isOutput()}">
     <port-delete-button *ngIf="isOutput()" [locked]="(_locked$ | async)!" (onDeletePort)="deletePort()"></port-delete-button>
-    <port-circle [id]="port.id" [direction]="port.direction" [locked]="(_locked$ | async)!"></port-circle>
+    <port-circle [id]="port.id" [direction]="port.direction" [locked]="(_locked$ | async)!" (onClickPort)="clickPort()"></port-circle>
     <port-datatype [datatype]="port.datatype" [direction]="port.direction" [locked]="(_locked$ | async)!" (onSelectDatatype)="selectDatatype($event)"></port-datatype>
     <port-delete-button *ngIf="isInput()" [locked]="(_locked$ | async)!" (onDeletePort)="deletePort()"></port-delete-button>
 </div>

@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 @Component({
@@ -16,7 +16,13 @@ export class PortCircleComponent {
     @Input() set direction(value: 'input' | 'output') { this._direction$.next(value) };
     @Input() set id(value: string) { this._id$.next(value) };
 
+    @Output() onClickPort = new EventEmitter<void>();
+
     @ViewChild('portCircleRef') elementRef!: ElementRef;
+
+    clickPort() {
+      this.onClickPort.emit();
+    }
 
     isInput(): boolean {
       return this._direction$.getValue() === 'input';

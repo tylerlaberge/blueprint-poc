@@ -1,2 +1,12 @@
-<div #start class="wire-start" cdkDrag (cdkDragMoved)="handleDrag()"></div>
-<div #end class="wire-end" cdkDrag (cdkDragMoved)="handleDrag()"></div>
+<div #start 
+    class="wire-start"
+    [style.left.px]="(_startAnchorPosition$ | async)!.x"
+    [style.top.px]="(_startAnchorPosition$ | async)!.y"
+    *ngIf="_startAnchorPosition$ | async">
+</div>
+<div #end 
+    class="wire-end" 
+    [style.left.px]="(_endAnchorPosition$ | async)!.x"
+    [style.top.px]="(_endAnchorPosition$ | async)!.y"
+    *ngIf="_endAnchorPosition$ | async">
+</div>
