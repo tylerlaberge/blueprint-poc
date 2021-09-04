@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, HostListener, Input, Output, ViewChild } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 @Component({
@@ -20,8 +20,13 @@ export class PortCircleComponent {
 
     @ViewChild('portCircleRef') elementRef!: ElementRef;
 
-    clickPort() {
-      this.onClickPort.emit();
+    @HostListener("mousedown", ["$event"])
+    private clickPort(event: Event) {
+      if (!this._locked$.getValue()) {
+        event.stopPropagation();
+        event.preventDefault();
+        this.onClickPort.emit();
+      }
     }
 
     isInput(): boolean {

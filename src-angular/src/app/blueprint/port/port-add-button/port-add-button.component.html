@@ -1,3 +1,8 @@
-<div class="port-add-button" (click)="clickAddButton()" [ngClass]="{'locked': _locked$ | async, 'input': isInput(), 'output': isOutput()}">
+<div class="port-add-button" 
+    (click)="clickAddButton()" 
+    [class.locked]="_locked$ | async"
+    [class.input]="isInput()"
+    [class.output]="isOutput()"
+>
     <mat-icon>add_circle_outline</mat-icon>
 </div>

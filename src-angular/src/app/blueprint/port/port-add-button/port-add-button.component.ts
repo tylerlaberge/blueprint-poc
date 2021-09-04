@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 @Component({
@@ -15,6 +15,14 @@ export class PortAddButtonComponent {
     @Input() set direction(value: 'input' | 'output') { this._direction$.next(value); };
 
     @Output() onAddPort = new EventEmitter<void>();
+
+    @HostListener("mousedown", ["$event"])
+    private stopPropagation(event: Event) {
+      if (!this._locked$.getValue()) {
+        event.stopPropagation();
+        event.preventDefault();
+      }
+    }
 
     clickAddButton() {
         this.onAddPort.emit();

@@ -1,6 +1,7 @@
 <div #portCircleRef 
     id="{{_id$ | async}}" 
     class="port-circle" 
-    [ngClass]="{'input': isInput(), 'output': isOutput(), 'locked': _locked$ | async}"
-    (mousedown)="clickPort()"
+    [class.input]="isInput()"
+    [class.output]="isOutput()"
+    [class.locked]="_locked$ | async"
 ></div>

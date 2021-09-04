@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, Output, ViewChild } from '@angular/core';
 import { MatSelect } from '@angular/material/select';
 import { BehaviorSubject } from 'rxjs';
 import { PortType } from 'src/types/blueprint';
@@ -25,6 +25,14 @@ export class PortDatatypeComponent {
   @ViewChild('portDatatypeSelector') set portDatatypeSelector(select: MatSelect) {
     if (select) {
       setTimeout(() => select.open());
+    }
+  }
+
+  @HostListener("mousedown", ["$event"])
+  private stopPropagation(event: Event) {
+    if (!this._locked$.getValue()) {
+      event.stopPropagation();
+      event.preventDefault();
     }
   }
 

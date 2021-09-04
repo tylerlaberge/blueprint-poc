@@ -1,3 +1,3 @@
-<div class="port-delete-button" *ngIf="!(_locked$ | async)" (click)="clickDeleteButton()">
+<div class="port-delete-button" *ngIf="!(_locked$ | async)" (click)="clickDeleteButton()" (mousedown)="$event.stopPropagation(); $event.preventDefault()">
     <mat-icon>delete</mat-icon>
 </div>
