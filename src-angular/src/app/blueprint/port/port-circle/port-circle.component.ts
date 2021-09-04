@@ -21,11 +21,10 @@ export class PortCircleComponent {
     @ViewChild('portCircleRef') elementRef!: ElementRef;
 
     @HostListener("mousedown", ["$event"])
-    private clickPort(event: Event) {
+    private stopPropagation(event: Event) {
       if (!this._locked$.getValue()) {
         event.stopPropagation();
         event.preventDefault();
-        this.onClickPort.emit();
       }
     }
 
@@ -35,5 +34,11 @@ export class PortCircleComponent {
   
     isOutput(): boolean {
       return this._direction$.getValue() === 'output';
+    }
+
+    notifyClickPort() {
+      if (!this._locked$.getValue()) {
+        this.onClickPort.emit();
+      }
     }
 }

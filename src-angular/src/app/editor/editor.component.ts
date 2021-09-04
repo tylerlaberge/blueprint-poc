@@ -1,9 +1,8 @@
-import { AfterViewInit, Component, OnInit, QueryList, ViewChildren } from '@angular/core';
-import { BehaviorSubject, combineLatest, Subject } from 'rxjs';
+import { Component, HostListener, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { Blueprint, Port } from 'src/types/blueprint';
 import { BlueprintComponent } from '../blueprint/blueprint.component';
 import { v4 as uuid } from 'uuid';
-import { concatAll, map, filter, take } from 'rxjs/operators';
 import { PortControlComponent } from '../blueprint/port/port-control/port-control.component';
 import { appendEmit, filterEmit, mapEmit } from 'src/utils/rxjs/utils';
 
@@ -12,12 +11,10 @@ import { appendEmit, filterEmit, mapEmit } from 'src/utils/rxjs/utils';
   templateUrl: './editor.component.html',
   styleUrls: ['./editor.component.scss']
 })
-export class EditorComponent implements AfterViewInit, OnInit {
+export class EditorComponent implements OnInit {
 
   _blueprints$: BehaviorSubject<Blueprint[]> = new BehaviorSubject<Blueprint[]>([]);
   _blueprintWirings$: BehaviorSubject<Partial<BlueprintWiring>[]> = new BehaviorSubject<Partial<BlueprintWiring>[]>([]);
-  _portMappings$: BehaviorSubject<{[portId: string]: BlueprintComponent}> = new BehaviorSubject<{[portId: string]: BlueprintComponent}>({});
-
   _refreshWirings$: Subject<void> = new Subject();
 
   @ViewChildren(BlueprintComponent) blueprintComponents!: QueryList<BlueprintComponent>;
@@ -40,27 +37,6 @@ export class EditorComponent implements AfterViewInit, OnInit {
     this._blueprints$.next([blueprintA, blueprintB]);
   }
 
-  ngAfterViewInit(): void {
-    this.updatePortMappings();
-  }
-
-  private updatePortMappings() {
-    let allPortMappings = {};
-    this.blueprintComponents.forEach(blueprint => {
-      combineLatest([blueprint.getInputs(), blueprint.getOutputs()]).pipe(
-        take(1),
-        map(([inputs, outputs]) => inputs.map(i => i.id).concat(outputs.map(o => o.id))),
-        map((portIds) => portIds.reduce<{[portId: string]: BlueprintComponent}>((mappings, portId) => {
-          mappings[portId] = blueprint;
-          return mappings;
-        }, {}))
-      ).subscribe(blueprintPortMappings => {
-        allPortMappings = {...allPortMappings, ...blueprintPortMappings};
-      });
-    });
-    this._portMappings$.next(allPortMappings);
-  }
-
   handleBlueprintMove(blueprintId: string) {
     this._refreshWirings$.next();
   }
@@ -79,7 +55,7 @@ export class EditorComponent implements AfterViewInit, OnInit {
 
   handleDestroyInputPort(portControl: PortControlComponent) {
     setTimeout(() => {
-      filterEmit(this._blueprintWirings$, wiring => wiring.input!.getIdentifier() !== portControl.getIdentifier())
+      filterEmit(this._blueprintWirings$, wiring => wiring.input!.getIdentifier() !== portControl.getIdentifier());
       setTimeout(() => this._refreshWirings$.next());
     });
   }
@@ -92,11 +68,44 @@ export class EditorComponent implements AfterViewInit, OnInit {
   }
 
   handleClickInputPort(portControl: PortControlComponent) {
+    filterEmit(this._blueprintWirings$, (wiring) => wiring.input !== portControl);
     appendEmit(this._blueprintWirings$, {input: portControl});
   }
 
   handleClickOutputPort(portControl: PortControlComponent) {
+    filterEmit(this._blueprintWirings$, (wiring) => wiring.output !== portControl);
     appendEmit(this._blueprintWirings$, {output: portControl});
+  }
+
+  @HostListener("mouseup", ["$event"])
+  private handleMouseUp(event: MouseEvent) {
+    const target = event.target as Element;
+    if (target.classList.contains("port-circle") && (target.classList.contains("input") ? this.wiringInputNeeded() : this.wiringOutputNeeded())) {
+      const targetPortControl: PortControlComponent = this.blueprintComponents
+        .map((blueprintComponent) => target.classList.contains("input") ? blueprintComponent.getInputPortControl(target.id) : blueprintComponent.getOutputPortControl(target.id))
+        .find(portControl => !!portControl)!;
+            
+      filterEmit(this._blueprintWirings$, (wiring) => wiring.input?.getIdentifier() !== targetPortControl.getIdentifier() && wiring.output?.getIdentifier() !== targetPortControl.getIdentifier());
+      mapEmit(this._blueprintWirings$, (wiring) => {
+        if (targetPortControl.isInput() && !wiring.input && !!wiring.output) {
+          return {...wiring, input: targetPortControl};
+        } else if (targetPortControl.isOutput() && !wiring.output && !!wiring.input) {
+          return {...wiring, output: targetPortControl};
+        } else {
+          return wiring;
+        }
+      });
+    } else {
+      filterEmit(this._blueprintWirings$, (wiring) => !!wiring.input && !!wiring.output);
+    }
+  }
+
+  private wiringInputNeeded() {
+    return this._blueprintWirings$.getValue().some(wiring => !!wiring.output && !wiring.input)
+  }
+
+  private wiringOutputNeeded() {
+    return this._blueprintWirings$.getValue().some(wiring => !!wiring.input && !wiring.output)
   }
 }
 

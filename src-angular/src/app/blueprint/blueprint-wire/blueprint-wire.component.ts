@@ -9,7 +9,7 @@ import { PortControlComponent } from '../port/port-control/port-control.componen
   templateUrl: './blueprint-wire.component.html',
   styleUrls: ['./blueprint-wire.component.scss']
 })
-export class BlueprintWireComponent implements OnInit, AfterViewInit, OnDestroy {
+export class BlueprintWireComponent implements OnInit, OnDestroy {
 
     private _subscriptions: Subscription[] = [];
     private _leaderLine$: BehaviorSubject<LeaderLine | null> = new BehaviorSubject<LeaderLine | null>(null);
@@ -33,25 +33,47 @@ export class BlueprintWireComponent implements OnInit, AfterViewInit, OnDestroy 
     @ViewChild("end", {static: false}) set endAnchor(element: ElementRef) { this._endAnchor$.next(element); };
 
     ngOnInit() {
+      /**
+       * Refresh leader line when start or end anchor position changes
+       */
       this._subscriptions.push(this._startAnchorPosition$.subscribe(() => this._leaderLine$.getValue()?.position()));
       this._subscriptions.push(this._endAnchorPosition$.subscribe(() => this._leaderLine$.getValue()?.position()));
 
+      /**
+       * Update mouse position anytime the mouse moves
+       */
       this._subscriptions.push(
         fromEvent<MouseEvent>(document, 'mousemove')
           .subscribe((e) => this._mousePosition$.next({x: e.clientX, y: e.clientY}))
       );
+
+      /**
+       * Anytime a new leader line is created, initialize it's position
+       */
       this._subscriptions.push(this._leaderLine$.subscribe(leaderLine => leaderLine?.position()));
-      this._subscriptions.push(this._refresh$.subscribe(() => this._leaderLine$.getValue()?.position()));
+
+      /**
+       * Whenever this component is notified to refresh, reposition the anchors
+       */
+      this._subscriptions.push(this._refresh$.subscribe(() => this.repositionAnchors()));
+
+      /**
+       * Whenever an input/output port is added, set the start/end anchor positions to the port positions; or if a port is undefined, set it's anchor position to follow the mouse
+       */
       this._subscriptions.push(combineLatest([this._inputPort$, this._outputPort$])
         .subscribe(([input, output]) => {
           input ?
-            setTimeout(() => this._endAnchorPosition$.next({x: input.getPortElement().getBoundingClientRect().left, y: input.getPortElement().getBoundingClientRect().top}))
+            setTimeout(() => this._endAnchorPosition$.next(this.getPortPosition(input)))
             : setTimeout(() => this._mousePosition$.subscribe(this._endAnchorPosition$));
           
           output ?
-            setTimeout(() => this._startAnchorPosition$.next({x: output.getPortElement().getBoundingClientRect().left, y: output.getPortElement().getBoundingClientRect().top}))
+            setTimeout(() => this._startAnchorPosition$.next(this.getPortPosition(output)))
             : setTimeout(() => this._mousePosition$.subscribe(this._startAnchorPosition$));
         }));
+
+      /**
+       * When that start/end anchors are added to the dom, draw a leaderline between them
+       */
       this._subscriptions.push(combineLatest([this._startAnchor$, this._endAnchor$])
         .pipe(
           filter(([start, end]) => !!start && !!end)
@@ -61,13 +83,29 @@ export class BlueprintWireComponent implements OnInit, AfterViewInit, OnDestroy 
         }));
     }
 
-    ngAfterViewInit() {
-
-    }
-
     ngOnDestroy() {
       this._subscriptions.forEach(sub => sub.unsubscribe());
       this._leaderLine$.getValue()?.remove();
+    }
+
+    private repositionAnchors() {
+      const inputPort = this._inputPort$.getValue();
+      const outputPort = this._outputPort$.getValue();
+
+      if (inputPort) {
+        setTimeout(() => this._endAnchorPosition$.next(this.getPortPosition(inputPort)));
+      }
+
+      if (outputPort) {
+        setTimeout(() => this._startAnchorPosition$.next(this.getPortPosition(outputPort)));
+      }
+    }
+
+    private getPortPosition(portControl: PortControlComponent) {
+      return {
+        x: portControl.getPortElement().getBoundingClientRect().left, 
+        y: portControl.getPortElement().getBoundingClientRect().top
+      };
     }
 
     private drawLeaderLine(start: HTMLElement, end: HTMLElement): LeaderLine {

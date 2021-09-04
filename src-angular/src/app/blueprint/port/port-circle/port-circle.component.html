@@ -4,4 +4,5 @@
     [class.input]="isInput()"
     [class.output]="isOutput()"
     [class.locked]="_locked$ | async"
+    (mousedown)="notifyClickPort()"
 ></div>
