@@ -20,7 +20,6 @@ export class BlueprintComponent implements OnInit {
 
   _inputs$: BehaviorSubject<Port[]> = new BehaviorSubject<Port[]>([]);
   _outputs$: BehaviorSubject<Port[]> = new BehaviorSubject<Port[]>([]);
-  _dragging$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   _locked$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   @Input() set blueprint(value: Blueprint) { this._blueprint$.next(value); };
@@ -63,15 +62,7 @@ export class BlueprintComponent implements OnInit {
       .find(portControl => portControl.getIdentifier() === outputPortId);
   }
 
-  grab() {
-    this._dragging$.next(true);
-  }
-
-  release() {
-    this._dragging$.next(false);
-  }
-
-  drag() {
+  notifyDrag() {
     this.onDrag.emit(this.identifier);
   }
   

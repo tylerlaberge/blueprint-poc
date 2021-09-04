@@ -1,4 +1,4 @@
-<div class="blueprint" cdkDrag (cdkDragMoved)="drag()" (mousedown)="grab()" (mouseup)="release()" [ngClass]="{'mouse-down': _dragging$ | async, 'locked': _locked$ | async}">
+<div class="blueprint" cdkDrag (cdkDragMoved)="notifyDrag()" [class.locked]="_locked$ | async">
     <blueprint-header [locked]="(_locked$ | async)!" [title]="'POST /todos'" (onToggleLock)="toggleLock()"></blueprint-header>
     <blueprint-contract 
         [inputs]="(_inputs$ | async)!" 

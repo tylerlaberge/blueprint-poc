@@ -20,7 +20,7 @@
         flex: 1;
     }
 
-    &.mouse-down {
+    &:active {
         cursor: grabbing;
     }
 }
