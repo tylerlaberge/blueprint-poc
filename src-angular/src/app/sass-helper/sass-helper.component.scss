@@ -17,4 +17,19 @@ $prefix: "--"; // Prefix string for custom CSS properties
     @include define-custom-property('color-bool', variables.$bool);
     @include define-custom-property('color-string', variables.$string);
     @include define-custom-property('color-object', variables.$object);
+
+    @include define-custom-property('color-number-o25', rgba(variables.$number, 0.25));
+    @include define-custom-property('color-bool-o25', rgba(variables.$bool, 0.25));
+    @include define-custom-property('color-string-o25', rgba(variables.$string, 0.25));
+    @include define-custom-property('color-object-o25', rgba(variables.$object, 0.25));
+
+    @include define-custom-property('color-number-o50', rgba(variables.$number, 0.50));
+    @include define-custom-property('color-bool-o50', rgba(variables.$bool, 0.50));
+    @include define-custom-property('color-string-o50', rgba(variables.$string, 0.50));
+    @include define-custom-property('color-object-o50', rgba(variables.$object, 0.50));
+
+    @include define-custom-property('color-number-o75', rgba(variables.$number, 0.75));
+    @include define-custom-property('color-bool-o75', rgba(variables.$bool, 0.75));
+    @include define-custom-property('color-string-o75', rgba(variables.$string, 0.75));
+    @include define-custom-property('color-object-o75', rgba(variables.$object, 0.75));
 }

@@ -25,10 +25,7 @@ export class BlueprintWireComponent implements OnInit, OnDestroy {
 
     _startAnchor$: BehaviorSubject<ElementRef | null> = new BehaviorSubject<ElementRef | null>(null);
     _endAnchor$: BehaviorSubject<ElementRef | null> = new BehaviorSubject<ElementRef | null>(null);
-
-    _anchorWidth$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
-    _anchorHeight$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
-
+    
     _sassHelper$: BehaviorSubject<SassHelperComponent | null> = new BehaviorSubject<SassHelperComponent | null>(null);
 
     @Input() set input(value: PortControlComponent | undefined) { this._inputPort$.next(value); }
@@ -42,17 +39,6 @@ export class BlueprintWireComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
       /**
-       * Get the anchor width/height values once it's available
-       */
-      this._subscriptions.push(this._startAnchor$
-        .pipe(filter(anchor => !!anchor))
-        .subscribe((anchor) => {
-          const anchorBoundingRect: DOMRect = anchor!.nativeElement.getBoundingClientRect();
-          this._anchorWidth$.next(anchorBoundingRect.width);
-          this._anchorHeight$.next(anchorBoundingRect.height);
-        }));
-
-      /**
        * Refresh leader line when start or end anchor position changes
        */
       this._subscriptions.push(this._startAnchorPosition$.subscribe(() => this._leaderLine$.getValue()?.position()));
@@ -63,10 +49,7 @@ export class BlueprintWireComponent implements OnInit, OnDestroy {
        */
       this._subscriptions.push(
         fromEvent<MouseEvent>(document, 'mousemove')
-          .subscribe((e) => this._mousePosition$.next({
-            x: e.clientX - this._anchorWidth$.getValue() / 2, 
-            y: e.clientY - this._anchorHeight$.getValue() / 2
-          }))
+        .subscribe((e) => this._mousePosition$.next({x: e.clientX, y: e.clientY}))
       );
 
       /**
@@ -124,15 +107,16 @@ export class BlueprintWireComponent implements OnInit, OnDestroy {
     }
 
     private getPortPosition(portControl: PortControlComponent) {
+      const portControlBoundingRect = portControl.getPortElement().getBoundingClientRect();
       return {
-        x: portControl.getPortElement().getBoundingClientRect().left, 
-        y: portControl.getPortElement().getBoundingClientRect().top
+        x: portControlBoundingRect.left + portControlBoundingRect.width / 2, 
+        y: portControlBoundingRect.top + portControlBoundingRect.height / 2
       };
     }
 
     private drawLeaderLine(start: HTMLElement, end: HTMLElement): LeaderLine {
       const datatype = this._inputPort$.getValue()?.getDataType() || this._outputPort$.getValue()?.getDataType();
-      const wireColor = this._sassHelper$.getValue()!.readProperty(`color-${datatype}`);
+      const wireColor = this._sassHelper$.getValue()!.readProperty(`color-${datatype}-o75`);
       return new LeaderLine(start, end, {
         color: wireColor,
         endPlug: 'behind',

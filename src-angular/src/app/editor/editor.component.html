@@ -3,7 +3,6 @@
         <blueprint #component 
             [blueprint]="blueprint" 
             (onDrag)="handleBlueprintMove($event)" 
-            (onChange)="handlePortChange(component, $event)"
             (onDestroyInputPort)="handleDestroyInputPort($event)"
             (onDestroyOutputPort)="handleDestroyOutputPort($event)"
             (onClickInputPort)="handleClickInputPort($event)"

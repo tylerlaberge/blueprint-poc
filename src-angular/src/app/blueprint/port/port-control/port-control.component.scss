@@ -1,6 +1,7 @@
 .port-control {
     display: flex;
     margin-bottom: 0.25em;
+    padding: 0.5em;
     &.output {
         port-circle {
             order: 1;

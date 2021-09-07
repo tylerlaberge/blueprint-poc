@@ -12,6 +12,7 @@ export class PortControlComponent implements OnDestroy {
 
     _port$ = new BehaviorSubject<Port | null>(null);
     _locked$ = new BehaviorSubject<boolean>(false);
+    _portHidden$ = new BehaviorSubject<boolean>(false);
 
     @Input() set port(value: Port) { this._port$.next(value); };
     @Input() set locked(value: boolean) { this._locked$.next(value); };
@@ -57,5 +58,13 @@ export class PortControlComponent implements OnDestroy {
 
     getDataType(): PortType {
         return this._port$.getValue()!.datatype;
+    }
+
+    hidePort() {
+        this._portHidden$.next(true);
+    }
+
+    unhidePort() {
+        this._portHidden$.next(false);
     }
 }

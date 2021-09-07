@@ -9,11 +9,13 @@ import { PortType } from 'src/types/blueprint';
 })
 export class PortCircleComponent {
 
+    _hidden$ = new BehaviorSubject<boolean>(false);
     _locked$ = new BehaviorSubject<boolean>(false);
     _direction$ = new BehaviorSubject<'input' | 'output' | null>(null);
     _datatype$ = new BehaviorSubject<PortType | null>(null);
     _id$ = new BehaviorSubject<string | null>(null);
 
+    @Input() set hidden(value: boolean) { this._hidden$.next(value); };
     @Input() set locked(value: boolean) { this._locked$.next(value); };
     @Input() set direction(value: 'input' | 'output') { this._direction$.next(value) };
     @Input() set datatype(value: PortType) { this._datatype$.next(value) };

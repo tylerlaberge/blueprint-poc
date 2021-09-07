@@ -2,47 +2,35 @@
 
 .port-circle {
     display: inline-block;
-    width: 1em;
-    height: 1em;
+    width: 0.5em;
+    height: 0.5em;
     border-radius: 50%;
-    transition: background-color .1s linear;
-    border-width: 2px;
+    transition: all .1s linear;
+    border-width: 0px;
     border-style: solid;
-    &.input {
-        margin-left: .65em;
-    }
-    &.output {
-        margin-right: .65em;
-    }
+    margin-left: 0.25em;
+    margin-right: 0.25em;
     &:not(.locked):hover {
         cursor: pointer;
+        transform: scale(2);
     }
     &.number {
-        background-color: rgba(variables.$number, 0.15);
+        background-color: rgba(variables.$number, 0.5);
         border-color: variables.$number;
-        &:not(.locked):hover {
-            background-color: rgba(variables.$number, 0.25);
-        }
     }
     &.bool {
-        background-color: rgba(variables.$bool, 0.15);
+        background-color: rgba(variables.$bool, 0.5);
         border-color: variables.$bool;
-        &:not(.locked):hover {
-            background-color: rgba(variables.$bool, 0.25);
-        }
     }
     &.string {
-        background-color: rgba(variables.$string, 0.15);
+        background-color: rgba(variables.$string, 0.5);
         border-color: variables.$string;
-        &:not(.locked):hover {
-            background-color: rgba(variables.$string, 0.25);
-        }
     }
     &.object {
-        background-color: rgba(variables.$object, 0.15);
+        background-color: rgba(variables.$object, 0.5);
         border-color: variables.$object;
-        &:not(.locked):hover {
-            background-color: rgba(variables.$object, 0.25);
-        }
+    }
+    &.hidden {
+        visibility: hidden;
     }
 }
