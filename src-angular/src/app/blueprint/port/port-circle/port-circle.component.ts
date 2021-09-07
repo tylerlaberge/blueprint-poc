@@ -1,5 +1,6 @@
 import { Component, ElementRef, EventEmitter, HostListener, Input, Output, ViewChild } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { PortType } from 'src/types/blueprint';
 
 @Component({
   selector: 'port-circle',
@@ -10,10 +11,12 @@ export class PortCircleComponent {
 
     _locked$ = new BehaviorSubject<boolean>(false);
     _direction$ = new BehaviorSubject<'input' | 'output' | null>(null);
+    _datatype$ = new BehaviorSubject<PortType | null>(null);
     _id$ = new BehaviorSubject<string | null>(null);
 
     @Input() set locked(value: boolean) { this._locked$.next(value); };
     @Input() set direction(value: 'input' | 'output') { this._direction$.next(value) };
+    @Input() set datatype(value: PortType) { this._datatype$.next(value) };
     @Input() set id(value: string) { this._id$.next(value) };
 
     @Output() onClickPort = new EventEmitter<void>();
@@ -34,6 +37,22 @@ export class PortCircleComponent {
   
     isOutput(): boolean {
       return this._direction$.getValue() === 'output';
+    }
+
+    isNumberDatatype(): boolean {
+      return this._datatype$.getValue() === 'number';
+    }
+
+    isBoolDatatype(): boolean {
+      return this._datatype$.getValue() === 'bool';
+    }
+
+    isStringDatatype(): boolean {
+      return this._datatype$.getValue() === 'string';
+    }
+
+    isObjectDatatype(): boolean {
+      return this._datatype$.getValue() === 'object';
     }
 
     notifyClickPort() {

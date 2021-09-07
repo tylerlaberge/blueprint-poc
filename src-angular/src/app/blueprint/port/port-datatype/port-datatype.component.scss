@@ -3,21 +3,27 @@
 .port-datatype-container {
     .port-datatype {
         transition: color .1s linear;
+        &.input {
+            margin-left: 0.5em;
+        }
+        &.output {
+            margin-right: 0.5em;
+        }
+        &.number {
+            color: variables.$number;
+        }
+        &.bool {
+            color: variables.$bool;
+        }
+        &.string {
+            color: variables.$string;
+        }
+        &.object {
+            color: variables.$object;
+        }
         &:not(.locked):hover {
             cursor: pointer;
             color: variables.$text-primary !important;
-        }
-    }
-    &.input {
-        .port-datatype {
-            margin-left: 0.5em;
-            color: variables.$input;
-        }
-    }
-    &.output {
-        .port-datatype {
-            margin-right: 0.5em;
-            color: variables.$output;
         }
     }
 }

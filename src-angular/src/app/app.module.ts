@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
-
 import { AppRoutingModule } from './app-routing.module';
+
 import { AppComponent } from './app.component';
+import { SassHelperComponent } from './sass-helper/sass-helper.component';
 import { EditorComponent } from './editor/editor.component';
 import { LockButtonComponent } from './blueprint/lock-button/lock-button.component';
 import { BlueprintHeaderComponent } from './blueprint/blueprint-header/blueprint-header.component';
@@ -29,6 +30,7 @@ import { HttpClientModule } from '@angular/common/http';
 @NgModule({
   declarations: [
     AppComponent,
+    SassHelperComponent,
     EditorComponent,
     LockButtonComponent,
     BlueprintHeaderComponent,

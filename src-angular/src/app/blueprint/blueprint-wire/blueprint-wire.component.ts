@@ -1,7 +1,8 @@
-import { Component, OnInit, Input, OnDestroy, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import * as LeaderLine from 'leader-line-new';
 import { BehaviorSubject, combineLatest, Observable, Subscription, fromEvent } from 'rxjs';
 import { filter } from 'rxjs/operators';
+import { SassHelperComponent } from 'src/app/sass-helper/sass-helper.component';
 import { PortControlComponent } from '../port/port-control/port-control.component';
 
 @Component({
@@ -25,12 +26,16 @@ export class BlueprintWireComponent implements OnInit, OnDestroy {
     _startAnchor$: BehaviorSubject<ElementRef | null> = new BehaviorSubject<ElementRef | null>(null);
     _endAnchor$: BehaviorSubject<ElementRef | null> = new BehaviorSubject<ElementRef | null>(null);
 
+    _sassHelper$: BehaviorSubject<SassHelperComponent | null> = new BehaviorSubject<SassHelperComponent | null>(null);
+
     @Input() set input(value: PortControlComponent | undefined) { this._inputPort$.next(value); }
     @Input() set output(value: PortControlComponent | undefined) { this._outputPort$.next(value); }
     @Input() set refresh(value: Observable<void>) { this._refresh$ = value; }
 
     @ViewChild("start", {static: false}) set startAnchor(element: ElementRef) { this._startAnchor$.next(element); };
     @ViewChild("end", {static: false}) set endAnchor(element: ElementRef) { this._endAnchor$.next(element); };
+
+    @ViewChild(SassHelperComponent) set sassHelper(sassHelper: SassHelperComponent) { this._sassHelper$.next(sassHelper); };
 
     ngOnInit() {
       /**
@@ -74,9 +79,9 @@ export class BlueprintWireComponent implements OnInit, OnDestroy {
       /**
        * When that start/end anchors are added to the dom, draw a leaderline between them
        */
-      this._subscriptions.push(combineLatest([this._startAnchor$, this._endAnchor$])
+      this._subscriptions.push(combineLatest([this._startAnchor$, this._endAnchor$, this._sassHelper$])
         .pipe(
-          filter(([start, end]) => !!start && !!end)
+          filter(([start, end, sassHelper]) => !!start && !!end && !!sassHelper)
         ).subscribe(([start, end]) => {
           this._leaderLine$.getValue()?.remove();
           this._leaderLine$.next(this.drawLeaderLine(start!.nativeElement, end!.nativeElement));
@@ -86,6 +91,38 @@ export class BlueprintWireComponent implements OnInit, OnDestroy {
     ngOnDestroy() {
       this._subscriptions.forEach(sub => sub.unsubscribe());
       this._leaderLine$.getValue()?.remove();
+    }
+
+    inputDatatypeIsNumber() {
+      return this._inputPort$.getValue()?.getDataType() === 'number';
+    }
+
+    inputDatatypeIsBool() {
+      return this._inputPort$.getValue()?.getDataType() === 'bool';
+    }
+
+    inputDatatypeIsString() {
+      return this._inputPort$.getValue()?.getDataType() === 'string';
+    }
+
+    inputDatatypeIsObject() {
+      return this._inputPort$.getValue()?.getDataType() === 'object';
+    }
+
+    outputDatatypeIsNumber() {
+      return this._outputPort$.getValue()?.getDataType() === 'number';
+    }
+
+    outputDatatypeIsBool() {
+      return this._outputPort$.getValue()?.getDataType() === 'bool';
+    }
+
+    outputDatatypeIsString() {
+      return this._outputPort$.getValue()?.getDataType() === 'string';
+    }
+
+    outputDatatypeIsObject() {
+      return this._outputPort$.getValue()?.getDataType() === 'object';
     }
 
     private repositionAnchors() {
@@ -109,12 +146,12 @@ export class BlueprintWireComponent implements OnInit, OnDestroy {
     }
 
     private drawLeaderLine(start: HTMLElement, end: HTMLElement): LeaderLine {
+      const datatype = this._inputPort$.getValue()?.getDataType() || this._outputPort$.getValue()?.getDataType();
+      const wireColor = this._sassHelper$.getValue()!.readProperty(`color-${datatype}`);
       return new LeaderLine(start, end, {
-        startPlugColor: '#da8b66',
-        endPlugColor: '#9eda66',
-        gradient: true,
+        color: wireColor,
         endPlug: 'behind',
-        dash: {animation: {duration: 150, timing: 'linear'}},
+        size: 3,
         startSocket: 'right',
         endSocket: 'left',
         startSocketGravity: [100, 0],

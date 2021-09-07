@@ -4,14 +4,14 @@
     transition: color .1s linear;
     &.input {
         margin-left: 0.5em;
-        color: variables.$input;
+        color: gray;
         &.locked {
             color: gray;
         }
     }
     &.output {
         margin-right: 0.5em;
-        color: variables.$output;
+        color: gray;
         &.locked {
             color: gray;
         }

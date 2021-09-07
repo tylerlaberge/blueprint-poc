@@ -1,5 +1,16 @@
-<div class="port-datatype-container" *ngIf="_datatype$ | async; let _datatype" [ngClass]="{'input': isInput(), 'output': isOutput()}">
-    <div class="port-datatype" [ngClass]="{'locked': _locked$ | async}" (click)="openDatatypeSelector()" *ngIf="!(_selectingDatatype$ | async)">{{_datatype}}</div>
+<div *ngIf="_datatype$ | async; let _datatype" class="port-datatype-container">
+    <div 
+        *ngIf="!(_selectingDatatype$ | async)"
+        class="port-datatype"
+        [class.input]="isInput()"
+        [class.output]="isOutput()"
+        [class.number]="isNumberDatatype()"
+        [class.bool]="isBoolDatatype()"
+        [class.string]="isStringDatatype()"
+        [class.object]="isObjectDatatype()"
+        [class.locked]="_locked$ | async"
+        (click)="openDatatypeSelector()"
+    >{{_datatype}}</div>
     <div class="port-datatype-select" *ngIf="_selectingDatatype$ | async">
         <mat-select #portDatatypeSelector (closed)="selectDatatype()">
             <mat-option *ngFor="let type of _datatypeOptions$ | async" (click)="selectDatatype(type)">

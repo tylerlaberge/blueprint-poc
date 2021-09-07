@@ -44,6 +44,22 @@ export class PortDatatypeComponent {
     return this._direction$.getValue() === 'output';
   }
 
+  isNumberDatatype(): boolean {
+    return this._datatype$.getValue() === 'number';
+  }
+
+  isBoolDatatype(): boolean {
+    return this._datatype$.getValue() === 'bool';
+  }
+
+  isStringDatatype(): boolean {
+    return this._datatype$.getValue() === 'string';
+  }
+
+  isObjectDatatype(): boolean {
+    return this._datatype$.getValue() === 'object';
+  }
+
   openDatatypeSelector() {
     if (!this._locked$.getValue()) {
       this._selectingDatatype$.next(true);

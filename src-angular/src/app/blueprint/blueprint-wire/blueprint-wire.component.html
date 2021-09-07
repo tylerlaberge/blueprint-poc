@@ -1,12 +1,3 @@
-<div #start 
-    class="wire-start"
-    [style.left.px]="(_startAnchorPosition$ | async)!.x"
-    [style.top.px]="(_startAnchorPosition$ | async)!.y"
-    *ngIf="_startAnchorPosition$ | async">
-</div>
-<div #end 
-    class="wire-end" 
-    [style.left.px]="(_endAnchorPosition$ | async)!.x"
-    [style.top.px]="(_endAnchorPosition$ | async)!.y"
-    *ngIf="_endAnchorPosition$ | async">
-</div>
+<div #start *ngIf="_startAnchorPosition$ | async" class="wire-start" [style.left.px]="(_startAnchorPosition$ | async)!.x" [style.top.px]="(_startAnchorPosition$ | async)!.y"></div>
+<div #end *ngIf="_endAnchorPosition$ | async" class="wire-end" [style.left.px]="(_endAnchorPosition$ | async)!.x" [style.top.px]="(_endAnchorPosition$ | async)!.y"></div>
+<sass-helper></sass-helper>

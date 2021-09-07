@@ -48,10 +48,14 @@ export class PortControlComponent implements OnDestroy {
     }
 
     isInput(): boolean {
-        return this._port$.getValue()?.direction === 'input';
+        return this._port$.getValue()!.direction === 'input';
     }
     
     isOutput(): boolean {
-        return this._port$.getValue()?.direction === 'output';
+        return this._port$.getValue()!.direction === 'output';
+    }
+
+    getDataType(): PortType {
+        return this._port$.getValue()!.datatype;
     }
 }
