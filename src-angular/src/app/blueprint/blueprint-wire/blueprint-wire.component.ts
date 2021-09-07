@@ -26,6 +26,9 @@ export class BlueprintWireComponent implements OnInit, OnDestroy {
     _startAnchor$: BehaviorSubject<ElementRef | null> = new BehaviorSubject<ElementRef | null>(null);
     _endAnchor$: BehaviorSubject<ElementRef | null> = new BehaviorSubject<ElementRef | null>(null);
 
+    _anchorWidth$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
+    _anchorHeight$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
+
     _sassHelper$: BehaviorSubject<SassHelperComponent | null> = new BehaviorSubject<SassHelperComponent | null>(null);
 
     @Input() set input(value: PortControlComponent | undefined) { this._inputPort$.next(value); }
@@ -39,6 +42,17 @@ export class BlueprintWireComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
       /**
+       * Get the anchor width/height values once it's available
+       */
+      this._subscriptions.push(this._startAnchor$
+        .pipe(filter(anchor => !!anchor))
+        .subscribe((anchor) => {
+          const anchorBoundingRect: DOMRect = anchor!.nativeElement.getBoundingClientRect();
+          this._anchorWidth$.next(anchorBoundingRect.width);
+          this._anchorHeight$.next(anchorBoundingRect.height);
+        }));
+
+      /**
        * Refresh leader line when start or end anchor position changes
        */
       this._subscriptions.push(this._startAnchorPosition$.subscribe(() => this._leaderLine$.getValue()?.position()));
@@ -49,7 +63,10 @@ export class BlueprintWireComponent implements OnInit, OnDestroy {
        */
       this._subscriptions.push(
         fromEvent<MouseEvent>(document, 'mousemove')
-          .subscribe((e) => this._mousePosition$.next({x: e.clientX, y: e.clientY}))
+          .subscribe((e) => this._mousePosition$.next({
+            x: e.clientX - this._anchorWidth$.getValue() / 2, 
+            y: e.clientY - this._anchorHeight$.getValue() / 2
+          }))
       );
 
       /**
@@ -68,12 +85,12 @@ export class BlueprintWireComponent implements OnInit, OnDestroy {
       this._subscriptions.push(combineLatest([this._inputPort$, this._outputPort$])
         .subscribe(([input, output]) => {
           input ?
-            setTimeout(() => this._endAnchorPosition$.next(this.getPortPosition(input)))
-            : setTimeout(() => this._mousePosition$.subscribe(this._endAnchorPosition$));
+            this._endAnchorPosition$.next(this.getPortPosition(input))
+            : this._mousePosition$.subscribe(this._endAnchorPosition$);
           
           output ?
-            setTimeout(() => this._startAnchorPosition$.next(this.getPortPosition(output)))
-            : setTimeout(() => this._mousePosition$.subscribe(this._startAnchorPosition$));
+            this._startAnchorPosition$.next(this.getPortPosition(output))
+            : this._mousePosition$.subscribe(this._startAnchorPosition$);
         }));
 
       /**
@@ -93,48 +110,16 @@ export class BlueprintWireComponent implements OnInit, OnDestroy {
       this._leaderLine$.getValue()?.remove();
     }
 
-    inputDatatypeIsNumber() {
-      return this._inputPort$.getValue()?.getDataType() === 'number';
-    }
-
-    inputDatatypeIsBool() {
-      return this._inputPort$.getValue()?.getDataType() === 'bool';
-    }
-
-    inputDatatypeIsString() {
-      return this._inputPort$.getValue()?.getDataType() === 'string';
-    }
-
-    inputDatatypeIsObject() {
-      return this._inputPort$.getValue()?.getDataType() === 'object';
-    }
-
-    outputDatatypeIsNumber() {
-      return this._outputPort$.getValue()?.getDataType() === 'number';
-    }
-
-    outputDatatypeIsBool() {
-      return this._outputPort$.getValue()?.getDataType() === 'bool';
-    }
-
-    outputDatatypeIsString() {
-      return this._outputPort$.getValue()?.getDataType() === 'string';
-    }
-
-    outputDatatypeIsObject() {
-      return this._outputPort$.getValue()?.getDataType() === 'object';
-    }
-
     private repositionAnchors() {
       const inputPort = this._inputPort$.getValue();
       const outputPort = this._outputPort$.getValue();
 
       if (inputPort) {
-        setTimeout(() => this._endAnchorPosition$.next(this.getPortPosition(inputPort)));
+        this._endAnchorPosition$.next(this.getPortPosition(inputPort));
       }
 
       if (outputPort) {
-        setTimeout(() => this._startAnchorPosition$.next(this.getPortPosition(outputPort)));
+        this._startAnchorPosition$.next(this.getPortPosition(outputPort));
       }
     }
 
