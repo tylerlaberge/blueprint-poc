@@ -41,8 +41,8 @@ export class BlueprintWireComponent implements OnInit, OnDestroy {
       /**
        * Refresh leader line when start or end anchor position changes
        */
-      this._subscriptions.push(this._startAnchorPosition$.subscribe(() => this._leaderLine$.getValue()?.position()));
-      this._subscriptions.push(this._endAnchorPosition$.subscribe(() => this._leaderLine$.getValue()?.position()));
+      this._subscriptions.push(this._startAnchorPosition$.subscribe(() => setTimeout(() => this._leaderLine$.getValue()?.position())));
+      this._subscriptions.push(this._endAnchorPosition$.subscribe(() => setTimeout(() => this._leaderLine$.getValue()?.position())));
 
       /**
        * Update mouse position anytime the mouse moves

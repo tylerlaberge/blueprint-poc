@@ -1,13 +1,15 @@
-<div #portCircleRef 
-    id="{{_id$ | async}}" 
-    class="port-circle" 
-    [class.input]="isInput()"
-    [class.output]="isOutput()"
-    [class.number]="isNumberDatatype()"
-    [class.bool]="isBoolDatatype()"
-    [class.string]="isStringDatatype()"
-    [class.object]="isObjectDatatype()"
-    [class.locked]="_locked$ | async"
-    [class.hidden]="_hidden$ | async"
-    (mousedown)="notifyClickPort()"
-></div>
+<div class="port-circle-container" (mouseenter)="toggleHover()" (mouseleave)="toggleHover()" (mousedown)="notifyClickPort()">
+    <div #portCircleRef 
+        id="{{_id$ | async}}" 
+        class="port-circle" 
+        [class.input]="isInput()"
+        [class.output]="isOutput()"
+        [class.number]="isNumberDatatype()"
+        [class.bool]="isBoolDatatype()"
+        [class.string]="isStringDatatype()"
+        [class.object]="isObjectDatatype()"
+        [class.locked]="_locked$ | async"
+        [class.hidden]="_hidden$ | async"
+        [class.expand]="_hovered$ | async"
+    ></div>
+</div>

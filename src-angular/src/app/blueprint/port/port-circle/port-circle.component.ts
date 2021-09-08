@@ -11,6 +11,7 @@ export class PortCircleComponent {
 
     _hidden$ = new BehaviorSubject<boolean>(false);
     _locked$ = new BehaviorSubject<boolean>(false);
+    _hovered$ = new BehaviorSubject<boolean>(false);
     _direction$ = new BehaviorSubject<'input' | 'output' | null>(null);
     _datatype$ = new BehaviorSubject<PortType | null>(null);
     _id$ = new BehaviorSubject<string | null>(null);
@@ -55,6 +56,10 @@ export class PortCircleComponent {
 
     isObjectDatatype(): boolean {
       return this._datatype$.getValue() === 'object';
+    }
+
+    toggleHover() {
+      this._hovered$.next(!this._hovered$.getValue());
     }
 
     notifyClickPort() {
