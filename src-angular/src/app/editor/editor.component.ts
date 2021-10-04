@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { Component, HostListener, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { Blueprint } from 'src/types/blueprint';
 import { BlueprintComponent } from '../blueprint/blueprint.component';
@@ -6,6 +6,7 @@ import { v4 as uuid } from 'uuid';
 import { PortControlComponent } from '../blueprint/port/port-control/port-control.component';
 import { appendEmit, filterEmit, mapEmit } from 'src/utils/rxjs/utils';
 import { concatAll } from 'rxjs/operators';
+import { MatMenuTrigger } from '@angular/material/menu';
 
 @Component({
   selector: 'app-editor',
@@ -21,7 +22,10 @@ export class EditorComponent implements OnInit {
   _appendWiring$: Subject<Partial<BlueprintWiring>> = new Subject();
   _removeWiring$: Subject<string> = new Subject();
 
+  _contextMenuPosition$: BehaviorSubject<{x: number, y: number}> = new BehaviorSubject<{x: number, y: number}>({x: 0, y: 0});
+
   @ViewChildren(BlueprintComponent) blueprintComponents!: QueryList<BlueprintComponent>;
+  @ViewChild(MatMenuTrigger) editorMenu!: MatMenuTrigger;
 
   constructor() { }
 
@@ -94,6 +98,22 @@ export class EditorComponent implements OnInit {
     this._removeWiring$.next(portControl.getIdentifier());
     // append a partial wiring to the output port
     this._appendWiring$.next({output: portControl});
+  }
+
+  createNewBlueprint(e: MouseEvent) {
+    appendEmit(this._blueprints$, {id: uuid(), title: 'Blueprint', position: {x: e.clientX - 50, y: e.clientY - 25}, inputs: [], outputs: []});
+  }
+
+  openPreferences() {
+    console.warn("PREFERENCES");
+  }
+
+  @HostListener("contextmenu", ["$event"])
+  private handleRightClick(event: MouseEvent) {
+    event.stopPropagation();
+    event.preventDefault();
+    this._contextMenuPosition$.next({x: event.clientX, y: event.clientY});
+    this.editorMenu.openMenu();
   }
 
   @HostListener("mouseup", ["$event"])

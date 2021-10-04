@@ -10,4 +10,14 @@
         </blueprint>
     </div>
     <blueprint-wire *ngFor="let wiring of _blueprintWirings$ | async" [input]="wiring.input" [output]="wiring.output" [refresh]="_refreshWirings$"></blueprint-wire>
+    <div 
+        style="position: absolute"
+        [style.left.px]="(_contextMenuPosition$ | async)!.x"
+        [style.top.px]="(_contextMenuPosition$ | async)!.y"
+        [matMenuTriggerFor]="contextMenu"
+    ></div>
+    <mat-menu #contextMenu class="custom">
+        <button mat-menu-item (click)="createNewBlueprint($event)">New Blueprint</button>
+        <button mat-menu-item (click)="openPreferences()">Preferences</button>
+    </mat-menu>
 </div>

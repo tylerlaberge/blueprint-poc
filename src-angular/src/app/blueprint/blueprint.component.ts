@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, ViewChild, HostListener } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { Blueprint, Port, PortType } from 'src/types/blueprint';
@@ -116,6 +116,13 @@ export class BlueprintComponent implements OnInit {
 
   clickOutputPort(portControl: PortControlComponent) {
     this,this.onClickOutputPort.emit(portControl);
+  }
+
+  @HostListener('keyup.enter')
+  private onPressEnter() {
+    if (!this._locked$.getValue()) {
+      this.toggleLock();
+    }
   }
 }
 

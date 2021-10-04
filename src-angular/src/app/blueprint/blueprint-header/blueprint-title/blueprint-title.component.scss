@@ -8,5 +8,11 @@
         font-size: 1em;
         border: none;
         outline: none;
+        &.locked:not(:active) {
+            cursor: grab;
+        }
+        &.locked:active {
+            cursor: grabbing;
+        }
     }
 }

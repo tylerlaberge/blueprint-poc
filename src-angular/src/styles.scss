@@ -1,4 +1,5 @@
 @use '~@angular/material' as mat;
+@use './variables';
 
 @include mat.core();
 
@@ -19,4 +20,21 @@ html, body {
     height: 100%;
     overflow: hidden;
     margin: 0;
+}
+
+.mat-menu-panel.custom {
+  background-color: rgba(variables.$primary, 0.25);
+  .mat-menu-content {
+    padding: 0;
+    .mat-menu-item {
+      transition: background-color .2s linear;
+      color: variables.$text-primary;
+      &.mat-focus-indicator {
+        background-color: inherit;
+      }
+      &:hover {
+        background-color: rgba(variables.$primary, 0.25);
+      }
+    }
+  } 
 }
