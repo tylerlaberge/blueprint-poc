@@ -13,10 +13,8 @@
         background-color: rgba(variables.$background, 0.5);
     }
 
-    .title {
+    blueprint-title {
         flex: 3;
-        text-align: end;
-        font-size: 1em;
     }
 
     lock-button {

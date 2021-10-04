@@ -26,14 +26,14 @@ export class EditorComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    let blueprintA: Blueprint = {id: uuid(), position: {x: 400, y: 500}, inputs: [
+    let blueprintA: Blueprint = {id: uuid(), title: 'Blueprint', position: {x: 400, y: 500}, inputs: [
       {id: uuid(), direction: 'input', datatype: 'number'},
       {id: uuid(), direction: 'input', datatype: 'string'},
     ], outputs: [
       {id: uuid(), direction: 'input', datatype: 'bool'},
       {id: uuid(), direction: 'input', datatype: 'object'},
     ]};
-    let blueprintB: Blueprint = {id: uuid(), position: {x: 1200, y: 700}, inputs: [
+    let blueprintB: Blueprint = {id: uuid(), title: 'Blueprint', position: {x: 1200, y: 700}, inputs: [
       {id: uuid(), direction: 'output', datatype: 'bool'},
       {id: uuid(), direction: 'output', datatype: 'bool'},
     ], outputs: []};

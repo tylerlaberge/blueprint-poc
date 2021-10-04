@@ -1,5 +1,5 @@
 <div class="blueprint-header" [ngClass]="{'locked': _locked$ | async}">
-    <h1 class="title">{{_title$ | async}}</h1>
+    <blueprint-title [title]="(_title$ | async)!" [locked]="(_locked$ | async)!" (onChangeTitle)="changeTitle($event)"></blueprint-title>
     <lock-button [locked]="(_locked$ | async)!" (onToggleLock)="clickLockButton()"></lock-button>
 </div>
 <hr>

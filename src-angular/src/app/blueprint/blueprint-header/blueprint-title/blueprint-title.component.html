@@ -1,0 +1,3 @@
+<div class="blueprint-title">
+    <input type="text" [value]="_title$ | async" [disabled]="_locked$ | async" (change)=handleTitleChange($event)>
+</div>

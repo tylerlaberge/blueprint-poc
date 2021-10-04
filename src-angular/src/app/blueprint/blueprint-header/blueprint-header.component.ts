@@ -15,8 +15,13 @@ export class BlueprintHeaderComponent {
     @Input() set title(value: string) { this._title$.next(value); };
 
     @Output() onToggleLock = new EventEmitter<void>();
+    @Output() onChangeTitle = new EventEmitter<string>();
 
     clickLockButton() {
       this.onToggleLock.emit();
+    }
+
+    changeTitle(title: string) {
+      this.onChangeTitle.emit(title);
     }
 }

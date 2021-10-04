@@ -18,6 +18,7 @@ export class BlueprintComponent implements OnInit {
 
   _blueprint$: BehaviorSubject<Blueprint | null> = new BehaviorSubject<Blueprint | null>(null);
 
+  _title$: BehaviorSubject<string> = new BehaviorSubject<string>('');
   _inputs$: BehaviorSubject<Port[]> = new BehaviorSubject<Port[]>([]);
   _outputs$: BehaviorSubject<Port[]> = new BehaviorSubject<Port[]>([]);
   _locked$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
@@ -40,6 +41,7 @@ export class BlueprintComponent implements OnInit {
       ).subscribe(blueprint => {
         blueprint!.inputs.forEach(input => this.addInput(input));
         blueprint!.outputs.forEach(output => this.addOutput(output));
+        this._title$.next(blueprint!.title);
         this._locked$.next(true);
       });
   }
@@ -94,6 +96,10 @@ export class BlueprintComponent implements OnInit {
 
   toggleLock() {
     this._locked$.next(!this._locked$.getValue());
+  }
+
+  changeTitle(title: string) {
+    this._title$.next(title);
   }
 
   notifyDestroyInputPort(portControl: PortControlComponent) {

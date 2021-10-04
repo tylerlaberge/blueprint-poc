@@ -1,5 +1,6 @@
 export interface Blueprint {
     id: string;
+    title: string;
     position: Coordinates;
     inputs: Port[];
     outputs: Port[];
